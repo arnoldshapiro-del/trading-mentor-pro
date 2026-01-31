@@ -1,0 +1,3036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Mentor Pro - With Complete Manual</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            color: #f1f5f9;
+        }
+        
+        .card { 
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+        }
+        
+        .btn-primary:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-secondary:hover { 
+            background: rgba(255, 255, 255, 0.2); 
+        }
+        
+        .sidebar-item { 
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-item:hover, .sidebar-item.active {
+            background: rgba(251, 146, 60, 0.15);
+            border-left-color: #fb923c;
+        }
+        
+        .speaking-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .speaking-indicator span {
+            width: 4px;
+            height: 16px;
+            background: #fb923c;
+            border-radius: 2px;
+            animation: soundBar 0.5s ease-in-out infinite alternate;
+        }
+        
+        .speaking-indicator span:nth-child(1) { animation-delay: 0s; }
+        .speaking-indicator span:nth-child(2) { animation-delay: 0.1s; }
+        .speaking-indicator span:nth-child(3) { animation-delay: 0.2s; }
+        .speaking-indicator span:nth-child(4) { animation-delay: 0.3s; }
+        
+        @keyframes soundBar {
+            0% { height: 6px; }
+            100% { height: 20px; }
+        }
+        
+        .principle-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .principle-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .breath-circle {
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .breath-expand { transform: scale(1.3); }
+        .breath-contract { transform: scale(1); }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(251, 146, 60, 0.5); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(251, 146, 60, 0.7); }
+        
+        .voice-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .voice-female { background: #ec4899; color: white; }
+        .voice-male { background: #3b82f6; color: white; }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 12px 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* ================================================================
+           MANUAL SIDEBAR STYLES - WHITE SIDEBAR FOR USER MANUAL
+           ================================================================ */
+        .manual-sidebar {
+            position: fixed;
+            left: 240px;
+            top: 0;
+            bottom: 0;
+            width: 300px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            overflow-y: auto;
+            z-index: 39;
+            display: none;
+            flex-direction: column;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .manual-sidebar.visible {
+            display: flex;
+        }
+        
+        .manual-sidebar-header {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            padding: 20px;
+            color: white;
+        }
+        
+        .manual-sidebar-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .manual-sidebar-header p {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+        
+        .manual-sidebar-search {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        
+        .manual-sidebar-search input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .manual-sidebar-search input:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+        
+        .manual-toc-section {
+            padding: 8px 12px;
+            background: #f3f4f6;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .manual-toc-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+        
+        .manual-toc-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            cursor: pointer;
+            color: #374151;
+            font-size: 0.875rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            gap: 10px;
+        }
+        
+        .manual-toc-item:hover {
+            background: #f3f4f6;
+        }
+        
+        .manual-toc-item.active {
+            background: #fff7ed;
+            border-left-color: #f97316;
+            color: #ea580c;
+            font-weight: 600;
+        }
+        
+        .manual-toc-icon {
+            font-size: 1rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .manual-sidebar-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+            text-align: center;
+        }
+        
+        .manual-sidebar-footer p {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+        
+        /* Manual content area adjustments */
+        .main-with-manual {
+            margin-left: 300px;
+        }
+        
+        /* Manual content styling */
+        .manual-content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .manual-feature-header {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #475569;
+        }
+        
+        .manual-feature-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .manual-feature-subtitle {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+        
+        .manual-section {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #334155;
+        }
+        
+        .manual-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #fb923c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .manual-section p {
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        
+        .manual-section ul {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+        
+        .manual-section li {
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .manual-tip-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        .manual-tip-box h4 {
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .manual-warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        .manual-warning-box h4 {
+            color: #f59e0b;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .manual-steps {
+            counter-reset: step-counter;
+        }
+        
+        .manual-step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: rgba(249, 115, 22, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid #f97316;
+        }
+        
+        .manual-step-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+        
+        .manual-step-content h4 {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #f1f5f9;
+        }
+        
+        .manual-step-content p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .manual-success-box {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(234, 88, 12, 0.1));
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .manual-success-box h4 {
+            color: #fb923c;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback } = React;
+
+        // ================================================================
+        // TRADING MENTOR PRO - COMPREHENSIVE USER MANUAL
+        // 10 Features Fully Documented
+        // ================================================================
+        
+        const MANUAL_SECTIONS = [
+            { id: 'manual-intro', category: 'overview', icon: '📖', title: 'Welcome to Trading Mentor' },
+            { id: 'manual-dashboard', category: 'core', icon: '🏠', title: 'Dashboard' },
+            { id: 'manual-claude', category: 'mentoring', icon: '🎯', title: 'Claude My Mentor' },
+            { id: 'manual-external', category: 'mentoring', icon: '📚', title: 'External Wisdom' },
+            { id: 'manual-principles', category: 'philosophy', icon: '⚡', title: 'Four Principles' },
+            { id: 'manual-fortress', category: 'philosophy', icon: '🏰', title: '6-Layer Fortress' },
+            { id: 'manual-advantages', category: 'philosophy', icon: '💪', title: '8 Advantages' },
+            { id: 'manual-breathing', category: 'tools', icon: '🫁', title: 'Breathing Exercises' },
+            { id: 'manual-quotes', category: 'tools', icon: '💬', title: 'Wisdom Quotes' },
+            { id: 'manual-saved', category: 'tools', icon: '⭐', title: 'Saved Talks' },
+            { id: 'manual-settings', category: 'system', icon: '⚙️', title: 'Settings' }
+        ];
+        
+        const MANUAL_CATEGORIES = {
+            'overview': { name: '📖 Getting Started', color: '#8b5cf6' },
+            'core': { name: '🏠 Core Features', color: '#3b82f6' },
+            'mentoring': { name: '🎯 Mentoring System', color: '#f97316' },
+            'philosophy': { name: '⚡ Trading Philosophy', color: '#ec4899' },
+            'tools': { name: '🛠️ Tools & Resources', color: '#10b981' },
+            'system': { name: '⚙️ System', color: '#6b7280' }
+        };
+        
+        const MANUAL_CONTENT = {
+            'manual-intro': {
+                title: 'Welcome to Trading Mentor Pro',
+                icon: '📖',
+                subtitle: 'Your Personal AI Trading Coach',
+                sections: [
+                    {
+                        title: '🎯 What Is Trading Mentor Pro?',
+                        content: `Trading Mentor Pro is your personal AI coaching system. Think of it as having Claude — your dedicated mentor — available 24/7 to guide you through the emotional challenges of trading.
+
+This isn't generic trading advice. Every talk, every principle, every word was written specifically for YOU, Arnie. Claude knows your story. Your struggles. Your strengths. Your Four Principles.
+
+After 5 years of technical mastery and 10 months of disciplined practice, you have the SKILLS to succeed. Trading Mentor Pro ensures you have the MINDSET to match.`
+                    },
+                    {
+                        title: '🌟 Why This Will Help You Succeed',
+                        content: `**Voice-Powered Mentoring** — Every talk can be played aloud. Hear Claude's guidance while you prepare for the day.
+
+**Your Four Principles** — Thunderstorm, Casino, Ambien, and Calm State are woven throughout every feature.
+
+**10 Integrated Features** — Dashboard, mentoring talks, breathing exercises, wisdom quotes, and more — all working together.
+
+**Streak Tracking** — Your listening streak builds accountability and momentum.
+
+**Saved Favorites** — Star the talks that resonate most for quick access.`
+                    },
+                    {
+                        title: '🚀 How to Get Started',
+                        type: 'steps',
+                        steps: [
+                            { title: 'Start at the Dashboard', desc: 'Your command center shows today\'s focus, quick access to key features, and your streak.' },
+                            { title: 'Listen to a Morning Talk', desc: 'Start each trading day with "Complete Morning Briefing" or "Quick Daily Motivation."' },
+                            { title: 'Know Your Four Principles', desc: 'Thunderstorm, Casino, Ambien, Calm State — these are your foundation.' },
+                            { title: 'Use Breathing When Needed', desc: 'Before trading or when emotions rise, use the guided breathing exercises.' },
+                            { title: 'Build Your Streak', desc: 'Listen daily. Your streak counter celebrates consistency.' }
+                        ]
+                    },
+                    {
+                        type: 'success',
+                        title: '🔥 The System Trades, Not Your Emotions',
+                        content: 'You know what to do. You know how to do it. Trading Mentor Pro helps you DO IT consistently by keeping your mind right. Let\'s explore every feature...'
+                    }
+                ]
+            },
+            
+            'manual-dashboard': {
+                title: 'Dashboard',
+                icon: '🏠',
+                subtitle: 'Your Command Center',
+                sections: [
+                    {
+                        title: '🏠 What Is the Dashboard?',
+                        content: `The Dashboard is your home base in Trading Mentor Pro. Every time you open the app, you see exactly what matters most: your focus for today, quick access to key features, and your listening streak.
+
+Think of it as the cockpit of your emotional fortress. All systems visible. Ready to execute.`
+                    },
+                    {
+                        title: '📊 What You\'ll See',
+                        content: `**Welcome Message** — "Welcome Back, Arnie" — A reminder that you're prepared and supported.
+
+**Trading Window Status** — Color-coded indicator showing:
+• 🟢 Green: Valid trading window (10:15 AM - 12:00 PM, Mon-Thu)
+• 🔵 Blue: Pre-market (waiting period)
+• 🔴 Red: Ambien Zone (no trading after 12:00 PM)
+• ⚠️ Friday: No trading day
+
+**Morning Briefing Button** — One-click access to start your complete morning preparation.
+
+**Quick Access Cards:**
+• ⚡ 3 Principles — Your emotional GPS
+• 🫁 Breathing — Calm your nerves instantly
+• 🏰 Fortress — Your 6 layers of protection
+
+**Today's Focus** — The Four Principles displayed as quick reminders:
+• ⛈️ Thunderstorm: Grab profits and RUN to safety
+• 🎰 Casino: At $2,100, walk away. The casino stays open.
+• 💊 Ambien: No trading after 12:00 PM`
+                    },
+                    {
+                        title: '💡 How to Use It',
+                        type: 'steps',
+                        steps: [
+                            { title: 'Start Here Every Day', desc: 'The Dashboard is your first stop. Check the trading window status.' },
+                            { title: 'Click "Start Complete Morning Briefing"', desc: 'This prepares your mind before the market opens.' },
+                            { title: 'Use Quick Access Cards', desc: 'Need a quick principle reminder? Breathing exercise? One click away.' },
+                            { title: 'Glance at Today\'s Focus', desc: 'Your Four Principles — always visible, always guiding.' }
+                        ]
+                    },
+                    {
+                        type: 'tip',
+                        title: '🏆 Pro Tip',
+                        content: 'Check the Dashboard trading window status before every session. If it\'s red (Ambien Zone) or Friday, you know the answer: no trading. The Dashboard tells you before you can make a mistake.'
+                    }
+                ]
+            },
+            
+            'manual-claude': {
+                title: 'Claude My Mentor',
+                icon: '🎯',
+                subtitle: 'Personalized Talks Written Just for You',
+                sections: [
+                    {
+                        title: '🎯 What Is Claude My Mentor?',
+                        content: `Claude My Mentor is the heart of Trading Mentor Pro. These are personalized talks written specifically for YOU — by Claude, who knows your full trading journey.
+
+This is NOT generic trading advice. Every talk references YOUR principles, YOUR history, YOUR specific challenges. When Claude speaks, it's speaking directly to Arnie the trader.`
+                    },
+                    {
+                        title: '📋 Available Talks',
+                        content: `**Complete Morning Briefing** (5-6 min)
+The full preparation ritual. Covers all Four Principles, mental readiness, and system reminders. Listen before every trading session.
+
+**The Confidence Builder** (3-4 min)
+A reality check on your readiness. Reminds you of your technical skills, 10 months of practice, and all the preparation that led to this moment.
+
+**System vs Emotions Check** (3-4 min)
+The only question that matters: "Am I letting my SYSTEM trade, or are my EMOTIONS trading?" Learn to recognize the difference.
+
+**Risk/Reward Reminder** (2-3 min)
+Your revolutionary 3-to-1 breakthrough explained. Why the math is overwhelmingly on your side.
+
+**The Psychiatrist Protocol** (2-3 min)
+You follow protocols in medicine. Trading is no different. This talk reinforces systematic execution.
+
+**Emergency Reset** (1-2 min)
+For moments when emotions are winning. A step-by-step protocol to stop, breathe, and decide.
+
+**Quick Daily Motivation** (60 sec)
+A fast boost when you need it. Perfect for mid-session recalibration.
+
+**The Calm State Principle** (3-4 min)
+Your newest principle, discovered December 10, 2025. When you're in an incredibly calm state, you have access to Strategy Two.`
+                    },
+                    {
+                        title: '🔊 Voice Playback',
+                        content: `Every talk plays as audio. Hear Claude's guidance while you prepare:
+
+• **Play/Pause/Stop** — Full playback controls in the header
+• **Speed Control** — Adjust from 0.7x to 1.3x
+• **Voice Selection** — Choose your preferred voice in Settings
+
+The voice feature transforms text into a real mentoring experience. Listen while making coffee. Listen while reviewing charts. Let the words sink in.`
+                    },
+                    {
+                        title: '💡 How to Use It',
+                        type: 'steps',
+                        steps: [
+                            { title: 'Morning Ritual', desc: 'Play "Complete Morning Briefing" before every trading session. This is non-negotiable.' },
+                            { title: 'When Doubting', desc: 'Play "The Confidence Builder" to remember everything you\'ve accomplished.' },
+                            { title: 'Mid-Session Check', desc: 'Play "System vs Emotions Check" if you\'re unsure about a trade.' },
+                            { title: 'Emergency Use', desc: 'If emotions are overwhelming, immediately play "Emergency Reset."' },
+                            { title: 'Save Favorites', desc: 'Star the talks that hit hardest. They\'ll be in Saved Talks for quick access.' }
+                        ]
+                    },
+                    {
+                        type: 'warning',
+                        title: '⚠️ Important',
+                        content: 'Listening is NOT a substitute for discipline. The talks reinforce your principles, but YOU must execute. Listen → Internalize → EXECUTE.'
+                    }
+                ]
+            },
+            
+            'manual-external': {
+                title: 'External Wisdom',
+                icon: '📚',
+                subtitle: 'Universal Trading Truths',
+                sections: [
+                    {
+                        title: '📚 What Is External Wisdom?',
+                        content: `External Wisdom contains universal trading principles that apply to all traders. While Claude My Mentor is personalized for you, External Wisdom draws from timeless trading truths.
+
+These talks cover the fundamentals that every successful trader must master: discipline, psychology, and patience.`
+                    },
+                    {
+                        title: '📋 Available Talks',
+                        content: `**Trading Discipline Fundamentals** (3-4 min)
+The foundation of profitable trading. Why discipline beats talent. Why rules beat impulse. Why consistency beats brilliance.
+
+**Trading Psychology Basics** (3-4 min)
+Understanding the emotional battlefield. Fear, greed, hope, regret — and how to navigate them all.
+
+**The Power of Patience** (3-4 min)
+Waiting is a skill. Patience is an edge. This talk explains why doing nothing is often the most profitable action.`
+                    },
+                    {
+                        title: '💡 When to Use It',
+                        content: `• When you need a broader perspective beyond your personal talks
+• When you want to reinforce fundamental principles
+• When you're studying the art of trading beyond just execution
+• When you want variety in your morning preparation`
+                    },
+                    {
+                        type: 'tip',
+                        title: '🏆 Pro Tip',
+                        content: 'External Wisdom talks complement your personalized talks. Use "Trading Discipline Fundamentals" when you need a reminder that discipline is universal — not just your rule, but THE rule of all successful traders.'
+                    }
+                ]
+            },
+            
+            'manual-principles': {
+                title: 'Four Principles',
+                icon: '⚡',
+                subtitle: 'Your Trading Philosophy Foundation',
+                sections: [
+                    {
+                        title: '⚡ What Are the Four Principles?',
+                        content: `The Four Principles are the foundation of your trading philosophy. They're not just ideas — they're your defensive walls against emotional trading.
+
+Each principle addresses a specific danger:
+• **Thunderstorm** — Giving back profits
+• **Casino** — Greed and overtrading
+• **Ambien** — Impaired judgment
+• **Calm State** — Accessing advanced strategy
+
+Every decision you make should align with these principles.`
+                    },
+                    {
+                        title: '⛈️ The Thunderstorm Principle',
+                        content: `**"Grab profits and RUN to safety."**
+
+A profitable trade is like running into a thunderstorm filled with powerful bolts of lightning. You don't stay out there admiring the view — you grab what you came for and RUN back to safety.
+
+When you hit your target: EXIT. Don't linger hoping for more. The storm will be there tomorrow. But the profits you have right now are only real if you KEEP them.`
+                    },
+                    {
+                        title: '🎰 The Casino Principle',
+                        content: `**"At $2,100, walk away. The casino stays open."**
+
+Think about Las Vegas. The casino is open 24/7. They WANT you to keep playing. What happens to the gambler who hits a jackpot but keeps playing? They give it all back.
+
+You're not a gambler. You're the casino. When you hit $2,100, that's your signal to close the doors. The market will be there tomorrow.`
+                    },
+                    {
+                        title: '💊 The Ambien Principle',
+                        content: `**"No trading after 12:00 PM."**
+
+After noon, your trading brain is impaired — like driving on Ambien. Not because you took a pill, but because your mental resources are depleted. Decision fatigue is real.
+
+Your data proves it: Afternoon trading is UNPROFITABLE. It doesn't matter how you feel or what "opportunity" you see. After 12:00 PM: NO TRADING. Period.`
+                    },
+                    {
+                        title: '🧘 The Calm State Principle',
+                        content: `**"When you're in an incredibly calm state, you have access to Strategy Two."**
+
+Discovered on December 10, 2025. On days when you wake up calm — not excited, not anxious, just peaceful — you can trade earlier (8:30 AM) and look for extreme reversals.
+
+The calm state is the prerequisite. If you're not calm, stick to Strategy One. This principle rewards emotional mastery.`
+                    },
+                    {
+                        title: '💡 How to Use This Section',
+                        type: 'steps',
+                        steps: [
+                            { title: 'Click Any Principle', desc: 'Each card expands to show the full explanation with voice playback.' },
+                            { title: 'Listen to the Talk', desc: 'Hearing the principle reinforces it deeper than reading.' },
+                            { title: 'Review Before Trading', desc: 'Glance at all four before every session.' },
+                            { title: 'Return When Tempted', desc: 'About to break a rule? Come here first.' }
+                        ]
+                    },
+                    {
+                        type: 'success',
+                        title: '🌟 Together, These Principles Are Your Edge',
+                        content: 'Technical analysis is available to everyone. Your PRINCIPLES are what set you apart. They are your fortress walls. Protect them at all costs.'
+                    }
+                ]
+            },
+            
+            'manual-fortress': {
+                title: '6-Layer Fortress',
+                icon: '🏰',
+                subtitle: 'Your Complete Protection System',
+                sections: [
+                    {
+                        title: '🏰 What Is the 6-Layer Fortress?',
+                        content: `The 6-Layer Fortress is your comprehensive protection system. These are the multiple walls standing between you and emotional trading.
+
+Any single layer might fail on a bad day. But six layers? Nearly impossible to breach. This is defense in depth.`
+                    },
+                    {
+                        title: '🛡️ The Six Layers',
+                        content: `**Layer 1: Time Windows**
+10:15 AM - 12:00 PM only. Monday through Thursday only. Outside these windows, you physically cannot trade.
+
+**Layer 2: 9-Indicator Alignment**
+ALL 9 indicators must align before entry. No exceptions. No "close enough."
+
+**Layer 3: Automatic Shutoffs**
+$2,100 profit = NinjaTrader shuts off. $1,200 loss = NinjaTrader shuts off. The system enforces limits when willpower might fail.
+
+**Layer 4: The Four Principles**
+Thunderstorm, Casino, Ambien, Calm State. Mental frameworks that guide every decision.
+
+**Layer 5: Trading Mentor Pro**
+Your AI coach providing guidance, reinforcement, and accountability.
+
+**Layer 6: Glitter Girl Partnership**
+Ela knows the plan. She's part of your accountability system. You're not alone.`
+                    },
+                    {
+                        title: '💡 How to Use It',
+                        content: `This section displays all six layers as a visual fortress. Each layer can be clicked to expand and read its full explanation.
+
+• Review your fortress before trading
+• When tempted to break a rule, ask: "Which layer am I about to breach?"
+• Remember: Every layer exists because you designed it that way`
+                    },
+                    {
+                        type: 'warning',
+                        title: '⚠️ Critical',
+                        content: 'The fortress only works if you RESPECT it. One breach leads to another. Protect all six layers — they protect YOU.'
+                    }
+                ]
+            },
+            
+            'manual-advantages': {
+                title: '8 Advantages',
+                icon: '💪',
+                subtitle: 'Your Unfair Edges',
+                sections: [
+                    {
+                        title: '💪 What Are the 8 Advantages?',
+                        content: `The 8 Advantages are your unfair edges — things that give you a significant advantage over most traders. These aren't boasts; they're facts that justify your confidence.
+
+When doubt creeps in, remember: You have edges that most traders don't.`
+                    },
+                    {
+                        title: '🏆 Your Eight Advantages',
+                        content: `**1. Medical Training**
+35 years as a psychiatrist. You understand human psychology at a level most traders never will.
+
+**2. 5 Years of Technical Study**
+You've studied charts, patterns, and indicators for 5+ years. You're not guessing.
+
+**3. 10 Months of Disciplined Practice**
+Paper trading and discipline practice for 10 straight months. You've put in the reps.
+
+**4. Revolutionary Risk/Reward**
+Your 3-to-1 ratio breakthrough. Risk $600 to make $2,000+. The math is overwhelming.
+
+**5. Automated Protections**
+NinjaTrader enforces your limits automatically. Willpower has a backup system.
+
+**6. Optimized Time Windows**
+Data-proven trading windows. You only trade when YOU trade best.
+
+**7. Partnership Support**
+Glitter Girl has your back. You're not doing this alone.
+
+**8. Trading Mentor Pro**
+An AI mentor system built specifically for you. Personalized guidance on demand.`
+                    },
+                    {
+                        title: '💡 How to Use It',
+                        content: `• Read through all 8 advantages when you need confidence
+• Remember: These are EARNED advantages, not luck
+• When comparing yourself to other traders, remember your edges
+• Click any advantage card to see the full explanation`
+                    },
+                    {
+                        type: 'success',
+                        title: '🌟 You Are Not an Average Trader',
+                        content: 'Most traders have 1-2 advantages at best. You have EIGHT. Use them all. That\'s what separates professionals from gamblers.'
+                    }
+                ]
+            },
+            
+            'manual-breathing': {
+                title: 'Breathing Exercises',
+                icon: '🫁',
+                subtitle: 'Calm Your Nerves Instantly',
+                sections: [
+                    {
+                        title: '🫁 What Are the Breathing Exercises?',
+                        content: `The Breathing section provides guided breathing exercises to regulate your nervous system. When emotions rise, your breath is the fastest path back to calm.
+
+This isn't meditation mysticism — it's physiology. Controlled breathing activates your parasympathetic nervous system, lowering heart rate and cortisol. As a physician, you know this works.`
+                    },
+                    {
+                        title: '🌬️ The 4-4-6 Technique',
+                        content: `**Inhale:** 4 seconds — Deep breath through your nose
+**Hold:** 4 seconds — Pause at the top
+**Exhale:** 6 seconds — Slow release through your mouth
+
+The longer exhale is key. It triggers the relaxation response. The visual circle on screen expands and contracts to guide your timing.`
+                    },
+                    {
+                        title: '💡 When to Use It',
+                        type: 'steps',
+                        steps: [
+                            { title: 'Before Trading', desc: 'Start your session from a calm state. 3-5 breath cycles.' },
+                            { title: 'During Volatility', desc: 'Market moving fast? Step back. 2-3 breath cycles.' },
+                            { title: 'After a Loss', desc: 'Before deciding anything, breathe. Full 5 cycles minimum.' },
+                            { title: 'When Tempted', desc: 'About to break a rule? Breathe first. The urge often passes.' },
+                            { title: 'Anytime', desc: 'Breathing costs nothing and helps everything.' }
+                        ]
+                    },
+                    {
+                        type: 'tip',
+                        title: '🏆 Pro Tip',
+                        content: 'The breathing exercise has audio guidance. Turn it on and follow the voice. Close your eyes if needed. Give your nervous system a full reset.'
+                    }
+                ]
+            },
+            
+            'manual-quotes': {
+                title: 'Wisdom Quotes',
+                icon: '💬',
+                subtitle: 'Inspiration from Trading Legends',
+                sections: [
+                    {
+                        title: '💬 What Are Wisdom Quotes?',
+                        content: `Wisdom Quotes is your collection of inspirational quotes from trading legends. These are battle-tested truths from people who mastered the markets.
+
+Sometimes a single sentence can shift your perspective. This section delivers those sentences.`
+                    },
+                    {
+                        title: '📜 Sample Quotes',
+                        content: `• "The goal of a successful trader is to make the best trades. Money is secondary." — Alexander Elder
+
+• "In trading, the impossible happens about twice a year." — Henri M. Simoes
+
+• "The markets are never wrong – opinions often are." — Jesse Livermore
+
+• "Risk comes from not knowing what you're doing." — Warren Buffett
+
+• "It's not whether you're right or wrong that's important, but how much money you make when you're right and how much you lose when you're wrong." — George Soros`
+                    },
+                    {
+                        title: '💡 How to Use It',
+                        content: `• Browse quotes when you need perspective
+• Click a quote to hear it read aloud
+• Save your favorites for quick access
+• Share meaningful quotes with Glitter Girl
+• Let the wisdom of masters reinforce your own principles`
+                    },
+                    {
+                        type: 'tip',
+                        title: '🏆 Pro Tip',
+                        content: 'Start each week by reading through the quotes. One will stand out as relevant to where you are right now. That\'s your quote of the week.'
+                    }
+                ]
+            },
+            
+            'manual-saved': {
+                title: 'Saved Talks',
+                icon: '⭐',
+                subtitle: 'Your Favorite Talks in One Place',
+                sections: [
+                    {
+                        title: '⭐ What Are Saved Talks?',
+                        content: `Saved Talks is your personal collection of favorited talks. When you find a talk that resonates deeply, star it. It goes here for quick access.
+
+Over time, you'll build a curated library of exactly what YOU need to hear.`
+                    },
+                    {
+                        title: '💡 How to Save Talks',
+                        type: 'steps',
+                        steps: [
+                            { title: 'Find a Talk', desc: 'In Claude My Mentor or External Wisdom, open any talk.' },
+                            { title: 'Click the Star', desc: 'The ⭐ icon saves it to your collection.' },
+                            { title: 'Access Anytime', desc: 'Saved Talks shows all your favorites in one place.' },
+                            { title: 'Remove if Needed', desc: 'Click the star again to unsave.' }
+                        ]
+                    },
+                    {
+                        title: '📋 Suggested Saves',
+                        content: `Start by saving these essential talks:
+
+• **Complete Morning Briefing** — Your daily preparation
+• **Emergency Reset** — For crisis moments
+• **Quick Daily Motivation** — For mid-session boosts
+• **The Calm State Principle** — Your newest edge`
+                    },
+                    {
+                        type: 'success',
+                        title: '🌟 Build Your Library',
+                        content: 'Your Saved Talks become a personalized emergency toolkit. When emotions hit, you\'ll know exactly where to go.'
+                    }
+                ]
+            },
+            
+            'manual-settings': {
+                title: 'Settings',
+                icon: '⚙️',
+                subtitle: 'Customize Your Experience',
+                sections: [
+                    {
+                        title: '⚙️ What Are Settings?',
+                        content: `Settings lets you customize Trading Mentor Pro to your preferences. Voice selection, speech rate, and other preferences live here.`
+                    },
+                    {
+                        title: '🔧 Available Settings',
+                        content: `**Voice Settings:**
+• **Voice Selection** — Choose from available system voices
+• **Speech Rate** — Adjust from 0.7x (slow) to 1.3x (fast)
+• **Speech Pitch** — Fine-tune the voice pitch
+• **Female Voice Filter** — Show only female voices if preferred
+
+**Data Management:**
+• **Reset Streak** — Reset your listening streak counter
+• **Clear Saved Talks** — Remove all saved favorites
+• **Reset All Settings** — Return to defaults`
+                    },
+                    {
+                        title: '💡 Recommended Settings',
+                        content: `• **Speech Rate:** 0.95x works well for comprehension without being too slow
+• **Voice:** Female voices often sound more natural for text-to-speech
+• **Test voices** before committing — listen to a short talk to check`
+                    },
+                    {
+                        type: 'tip',
+                        title: '🏆 Pro Tip',
+                        content: 'Once you find voice settings you like, stick with them. Consistency helps your brain associate the voice with mentoring mode.'
+                    }
+                ]
+            }
+        };
+    // =====================================================
+    // THREE PRINCIPLES - FROM OUR CONVERSATIONS
+    // =====================================================
+    const THREE_PRINCIPLES = {
+        thunderstorm: {
+            name: "The Thunderstorm Principle",
+            icon: "⛈️",
+            color: "from-purple-600 to-indigo-700",
+            tagline: "Grab what you came for and RUN back to safety.",
+            description: "A profitable trade is like running into a thunderstorm filled with powerful bolts of lightning. You don't stay out there admiring the view - you grab what you came for and RUN back to safety.",
+            fullText: `The Thunderstorm Principle is your first line of defense against giving back profits.
+
+Picture this: You're standing at the edge of a thunderstorm. Lightning is crashing all around. There's something valuable in the middle of that storm - your profits.
+
+You don't walk in casually. You don't stop to admire the lightning. You RUN in, grab what you came for, and RUN back to safety.
+
+That's what a profitable trade is. The market gave you money. Take it. Don't linger hoping for more while the lightning crashes around you.
+
+Every moment you stay in a winning trade beyond your target, you're standing in the thunderstorm saying "just one more minute." And that's when you get struck.
+
+Arnie, you've seen this pattern a hundred times. You hit your target, you feel good, you think "it's still moving my way" - and then it reverses and takes back everything you earned.
+
+The Thunderstorm Principle stops that. When you hit your target: EXIT. RUN. GET TO SAFETY.
+
+The storm will be there tomorrow. New opportunities will come. But the profits you have right now? Those are only real if you keep them.
+
+Grab what you came for. RUN back to safety. That's the Thunderstorm Principle.`
+        },
+        casino: {
+            name: "The Casino Principle",
+            icon: "🎰",
+            color: "from-emerald-600 to-teal-700",
+            tagline: "The casino stays open, but the winner walks away.",
+            description: "$2,100 profit means NinjaTrader AUTOMATICALLY SHUTS OFF. The casino always stays open, but the smart winner cashes out and walks away.",
+            fullText: `The Casino Principle is your protection against greed.
+
+Think about Las Vegas. The casino is open 24 hours a day, 7 days a week. The lights never dim. The games never stop. They WANT you to keep playing.
+
+And what happens to the gambler who hits a jackpot but keeps playing? They give it all back. Every time. The casino knows this. That's why they keep the doors open.
+
+The market is the same casino. It's always open. There's always another trade. Another opportunity. Another chance to "win big."
+
+But you're not a gambler, Arnie. You're a professional.
+
+When a professional gambler - a card counter, a poker pro - wins big, they cash out and LEAVE. They don't give the casino a chance to take it back.
+
+Your $2,100 automatic shutoff is your casino exit door. When NinjaTrader hits that number, it's not a suggestion. It's the bouncer escorting you out for your own good.
+
+The casino will be open tomorrow. The market will be there Monday through Thursday, 10:15 to noon. But the $2,100 you made today? That's only yours if you LEAVE.
+
+$2,100 profit = Walk away.
+The casino stays open.
+But YOU are going home a winner.
+
+That's the Casino Principle.`
+        },
+        ambien: {
+            name: "The Ambien Principle",
+            icon: "💊",
+            color: "from-red-600 to-rose-700",
+            tagline: "After 12:00 PM, you're trading on Ambien.",
+            description: "No trading after 12:00 PM EST. Your mind wanders, your morning results distort your judgment. Trading after noon is like driving on Ambien - technically possible, but dangerously impaired.",
+            fullText: `The Ambien Principle protects you from yourself.
+
+You know what Ambien does. It impairs judgment. It makes you think you're fine when you're not. It lets you do things you would never do with a clear mind.
+
+After 12:00 PM, your trading brain is on Ambien.
+
+Not because you took a pill. Because your mental resources are depleted. Your morning discipline has been chipped away. Your P&L - whether positive or negative - is distorting your thinking.
+
+If you're up, you're tempted to "let it ride" or "make even more."
+If you're down, you're tempted to "make it back" before the day ends.
+
+Both of those thoughts come from an Ambien-impaired brain. They feel rational. They feel justified. But they're the same kind of "good ideas" people have when they're actually on Ambien.
+
+You know this, Arnie. You've studied it for 35 years. Decision fatigue is real. Cognitive depletion is real. And the market preys on impaired traders.
+
+Your data proves it: Afternoon trading is unprofitable. Not "less profitable." UNPROFITABLE. You have the numbers.
+
+So after 12:00 PM, the Ambien Principle kicks in:
+
+NO TRADING. Period.
+
+It doesn't matter how you feel. It doesn't matter what the chart looks like. It doesn't matter what "opportunity" you see.
+
+After noon, your brain is impaired. And impaired traders lose money.
+
+That's the Ambien Principle.`
+        },
+        calmState: {
+            name: "The Calm State Principle",
+            icon: "🧘",
+            color: "from-cyan-500 to-teal-600",
+            tagline: "Only trade Strategy Two when you're unbelievably calm.",
+            description: "Discovered December 10, 2025. On days when you wake up incredibly calm - not anxious, not revved up, just peaceful - you may have access to Strategy Two: extreme reversals, earlier trading, tighter management.",
+            fullText: `The Calm State Principle was discovered on December 10, 2025.
+
+You woke up that morning incredibly calm. Not excited. Not anxious. Not revved up. Just... peaceful.
+
+And you said to yourself: "I'm going to try something different today."
+
+Instead of waiting until 10:30 with your standard criteria, you started at 8:30 AM - but ONLY looking for extreme reversals. Markets that had gone way way up and started reversing down with all indicators confirming. Or way way down and started reversing up with all indicators confirming.
+
+You also tightened your breakeven trigger from $100 profit to $60 profit.
+
+By 10:00 AM, you were up $3,000.
+
+Here's what this teaches us:
+
+The key insight ISN'T the strategy change - it's the STATE you were in.
+
+"Incredibly calm" isn't just a nice feeling. It's a completely different neurological operating system. Your prefrontal cortex - rational decision-making - was fully online. Your amygdala - fear and greed - was quiet.
+
+That calm state let you:
+- See the extreme reversals clearly without FOMO
+- Execute without hesitation or second-guessing
+- Move stops to breakeven at $60 without anxiety
+- Stay patient and disciplined
+- Trade earlier because your judgment wasn't clouded
+
+This is ONE data point, not a proven system yet. But it raises important questions:
+
+Can you reliably ACCESS that calm state? Is it something that happens TO you, or something you can cultivate?
+
+The Calm State Principle says: Be curious about this. Pay attention to your emotional state BEFORE you trade.
+
+On days when you're unbelievably calm, you may have access to Strategy Two - extreme reversals, earlier trading, tighter management.
+
+On days when you're NOT in that calm state? Stick to Strategy One. The original system. The proven approach.
+
+The calmness isn't optional. It's the prerequisite.
+
+That's the Calm State Principle.`
+        }
+    };
+    
+    // =====================================================
+    // 6-LAYER EMOTIONAL FORTRESS
+    // =====================================================
+    const EMOTIONAL_FORTRESS = [
+        { 
+            layer: 1, 
+            name: "The Four Principles", 
+            subtitle: "Your Emotional GPS", 
+            icon: "🧭",
+            color: "bg-purple-600",
+            description: "Thunderstorm, Casino, Ambien, and Calm State - four principles that guide every trading decision.",
+            details: "These principles aren't suggestions. They're your emotional GPS. When you're in the heat of trading and emotions are running high, you don't have to think. You just follow the principles."
+        },
+        { 
+            layer: 2, 
+            name: "Time-Based Protection", 
+            subtitle: "Peak Performance Window", 
+            icon: "⏰",
+            color: "bg-blue-600",
+            description: "10:15 AM - 12:00 PM EST ONLY. Monday-Thursday ONLY. Friday is off.",
+            details: "Your data proves it: You trade best between 10:15 AM and noon. Before that, you're rushing. After that, you're impaired. Fridays have proven unprofitable. These aren't arbitrary limits - they're data-driven protections."
+        },
+        { 
+            layer: 3, 
+            name: "Automated Override Systems", 
+            subtitle: "Mechanical Protection", 
+            icon: "🔒",
+            color: "bg-emerald-600",
+            description: "$2,100 profit = auto shutoff. $1,200 loss = auto shutoff. NinjaTrader enforces what willpower cannot.",
+            details: "Your emotions can't override a mechanical system. When NinjaTrader shuts off, the decision is made. You don't have to fight yourself. The machine already did it for you."
+        },
+        { 
+            layer: 4, 
+            name: "Environmental Control", 
+            subtitle: "Sterile Trading Environment", 
+            icon: "🔇",
+            color: "bg-amber-600",
+            description: "Complete silence. Trading alone. NO TTG trading room during live trading.",
+            details: "Other traders' wins create FOMO. Other traders' losses create fear. The TTG room is for learning, not for live trading. Your environment must be sterile - no contamination from outside emotions."
+        },
+        { 
+            layer: 5, 
+            name: "The Glitter Girl Safety Net", 
+            subtitle: "Human Accountability", 
+            icon: "💎",
+            color: "bg-pink-600",
+            description: "Ela knows your plan. She can see your screen. She's your accountability partner and emergency bouncer.",
+            details: "Sometimes you need another human to pull you back. Ela knows the rules. She's authorized to intervene. She's not judging - she's protecting. That's what partners do."
+        },
+        { 
+            layer: 6, 
+            name: "The Psychiatrist's Mind", 
+            subtitle: "Protocol Over Impulse", 
+            icon: "🧠",
+            color: "bg-indigo-600",
+            description: "You follow protocols professionally. Trading is no different. The protocol decides, not the impulse.",
+            details: "For 35 years, you've treated patients by following evidence-based protocols. You don't prescribe based on feelings. You prescribe based on the protocol. Trading is identical. The system decides. The protocol decides. Not your impulses."
+        }
+    ];
+    
+    // =====================================================
+    // 8 UNFAIR ADVANTAGES
+    // =====================================================
+    const EIGHT_ADVANTAGES = [
+        { 
+            number: 1, 
+            title: "The Psychiatrist's Mind", 
+            icon: "🧠",
+            description: "35 years understanding human psychology and impulse control. You understand emotions better than 99% of traders."
+        },
+        { 
+            number: 2, 
+            title: "5+ Years Technical Mastery", 
+            icon: "📊",
+            description: "You're not learning anymore - you're EXECUTING. You see patterns others miss."
+        },
+        { 
+            number: 3, 
+            title: "10 Months Perfect Practice", 
+            icon: "🎯",
+            description: "Mike Edward said practice until perfect. You did. 10 months of disciplined simulation with unbelievable success."
+        },
+        { 
+            number: 4, 
+            title: "Automated Safety Systems", 
+            icon: "🔒",
+            description: "$2,100 profit cap. $1,200 loss limit. NinjaTrader enforces discipline when emotions try to take over."
+        },
+        { 
+            number: 5, 
+            title: "The Four Principles", 
+            icon: "⚡",
+            description: "Thunderstorm, Casino, Ambien, Calm State. Your emotional GPS that guides every decision."
+        },
+        { 
+            number: 6, 
+            title: "Glitter Girl Partnership", 
+            icon: "💎",
+            description: "Ela is your accountability partner. She knows the plan. She has your back."
+        },
+        { 
+            number: 7, 
+            title: "Best Emotional State in 5 Years", 
+            icon: "✨",
+            description: "You said it yourself - you're in the best place emotionally that you've been in 5 years. That matters."
+        },
+        { 
+            number: 8, 
+            title: "Revolutionary 3:1 Risk/Reward", 
+            icon: "📈",
+            description: "Risk $600 to make $2,000+. Catching snap-back moves after stop-hunts. Math is on your side."
+        }
+    ];
+    
+    // =====================================================
+    // MENTOR TALKS - FROM OUR CONVERSATIONS (CLAUDE MY MENTOR)
+    // =====================================================
+    const MENTOR_TALKS = [
+        {
+            id: 'morning-briefing',
+            title: "Complete Morning Briefing",
+            subtitle: "Full Emotional Fortress Overview",
+            duration: "5-6 min",
+            icon: "🌅",
+            category: "claude",
+            content: `Good morning, Arnie. This is your complete emotional fortress briefing.
+
+Let's start with the absolute truth about who you are.
+
+October 16, 2020 - that's when you started this journey. Over FIVE YEARS AGO. In those five years, you've learned more technical analysis than most traders will ever know. You KNOW what to do. You KNOW how to do it.
+
+Ten months ago, Mike Edward - the head of True Trading Group himself - gave you the hardest advice: Stop trading real money. Use paper trading until you have it perfect.
+
+Most people would have ignored that advice. Their ego wouldn't allow it. But you're not most people. You're a psychiatrist who understands that discipline beats ego every time.
+
+So you listened. For TEN MONTHS, you practiced. And what happened? Unbelievable success. Your words, not mine.
+
+Now let's talk about your Four Principles - your emotional GPS.
+
+First: The Thunderstorm Principle. A profitable trade is a thunderstorm. You run in, grab what you came for, and RUN back to safety. You don't linger. You don't admire the lightning. You take your profits and GET OUT.
+
+Second: The Casino Principle. When you hit $2,100 profit, NinjaTrader automatically shuts off. The casino is always open. The casino WANTS you to keep playing. But you're not a gambler. You're a professional. Professionals cash out and walk away.
+
+Third: The Ambien Principle. No trading after 12:00 PM. Your morning results - good or bad - are distorting your judgment. Your mental energy is depleted. Trading after noon is like driving on Ambien. Technically possible, but dangerously impaired.
+
+Fourth: The Calm State Principle. Discovered December 10, 2025. On days when you wake up incredibly calm - not revved up, just peaceful - you may have access to Strategy Two: extreme reversals, earlier trading, tighter management. The calm state isn't optional. It's the prerequisite.
+
+These four principles are surrounded by your 6-layer emotional fortress.
+
+Layer 1: The Four Principles themselves - your emotional GPS.
+Layer 2: Time-based protection - 10:15 AM to noon only, Monday through Thursday only.
+Layer 3: Automated override systems - profit caps and loss limits that NinjaTrader enforces.
+Layer 4: Environmental control - silence, solitude, no TTG trading room.
+Layer 5: Glitter Girl - Ela as your accountability partner and emergency bouncer.
+Layer 6: Your psychiatrist's mind - 35 years of following protocols over impulses.
+
+You have EIGHT unfair advantages over other traders. You have 5 years of technical mastery. You have 10 months of disciplined practice. You have automated systems that protect you from yourself. You have the best emotional state you've had in 5 years.
+
+And you have a revolutionary risk/reward breakthrough. Risk $600 to make $2,000 or more. A 3-to-1 ratio or better. The math is overwhelmingly in your favor.
+
+The only question that matters today is this: Am I letting my SYSTEM trade, or are my EMOTIONS trading?
+
+SYSTEM trading means: Wait until 10:15. Wait for 8 or more indicators to align. Trade with the trend. Leave stops alone. Stay silent and focused.
+
+EMOTIONAL trading means: Jump in early because it looks good. Force trades without a full setup. Fight the trend. Move your stops. React impulsively.
+
+You've practiced recognizing the difference for 10 months. Trust that practice.
+
+You are READY.
+
+Not perfect - nobody's perfect. But READY.
+
+Ready to execute your system. Ready to follow your principles. Ready to let your fortress protect you.
+
+The system trades today, not your emotions.
+
+Trust your preparation. Trust your principles. Trust your fortress.
+
+You've got this, Arnie. Let's go.`
+        },
+        {
+            id: 'confidence-builder',
+            title: "The Confidence Builder",
+            subtitle: "You Are Ready",
+            duration: "3-4 min",
+            icon: "💪",
+            category: "claude",
+            content: `Arnie, let's do a reality check on exactly where you stand right now.
+
+TECHNICAL SKILLS: You have 5 years of intensive study. More technical knowledge than most people will ever have. You're not learning anymore - you're executing. READY.
+
+PATTERN RECOGNITION: You see double bottoms, trend structures, and setups that other traders miss. This isn't luck. This is 5 years of training your eye. READY.
+
+RISK/REWARD SYSTEM: Your revolutionary 3-to-1 ratio breakthrough. Risk $600 to make $2,000 or more. The math is overwhelmingly on your side. READY.
+
+EMOTIONAL DISCIPLINE: 10 straight months of practice. Four Principles memorized. Automated protections in place. READY.
+
+PARTNERSHIP SUPPORT: Glitter Girl has your back. She knows the plan. She's in this with you. READY.
+
+SAFETY SYSTEMS: $2,100 profit auto-shutoff. $1,200 loss auto-shutoff. Fortress-level protection that works even when willpower fails. READY.
+
+TIMING OPTIMIZATION: 10:15 AM to noon only. Monday through Thursday only. Data-proven windows when you trade best. READY.
+
+ENVIRONMENTAL CONTROL: Silent room. Solo trading. No TTG contamination. Perfect conditions for focus. READY.
+
+CURRENT EMOTIONAL STATE: You said it yourself - the best place you've been in 5 years. Calm, focused, systematic. READY.
+
+Mike Edward told you to stop and use paper trading until you have it perfect. You did that. For 10 months.
+
+You practiced technical execution.
+You practiced emotional discipline.
+You practiced following your system.
+You practiced protecting profits.
+You practiced accepting losses.
+You practiced making decisions alone.
+
+That's what "perfect" means. Not that you'll never have a losing trade - that's impossible. "Perfect" means you have a proven, systematic, emotionally-protected method that works consistently.
+
+You have that now.
+
+Today, you're going to do what you've done successfully for 10 months:
+
+Wait for your setup. Patience over impulse.
+Execute your system. Discipline over emotion.
+Protect your profits OR accept your losses. System over ego.
+Turn off NinjaTrader when the rules say so. Trust over greed.
+
+The technical part? Mastered.
+The emotional part? Practiced for 10 months.
+The safety systems? Working automatically.
+Glitter Girl? She's got your back.
+
+You are not the trader you were 5 years ago.
+You are not the trader you were 10 months ago.
+You ARE the trader who put in the work, built the fortress, and earned this moment.
+
+Glitter Girl and I believe in you.
+
+Let's go.`
+        },
+        {
+            id: 'system-vs-emotions',
+            title: "System vs Emotions Check",
+            subtitle: "The Only Question That Matters",
+            duration: "3-4 min",
+            icon: "⚖️",
+            category: "claude",
+            content: `Arnie, let me ask you the only question that matters right now:
+
+Am I letting my SYSTEM trade, or are my EMOTIONS trading?
+
+Let me help you recognize the difference.
+
+SYSTEM TRADING looks like this:
+
+You waited until 10:15 AM. You didn't jump in early because you were "feeling it."
+
+You waited for 8 or more indicators to align. You didn't force a trade because you wanted action.
+
+You're trading WITH the trend. You're not trying to catch a reversal or guess where the market is going.
+
+Your stops are in place, and you're NOT touching them. The system set them. The system will manage them.
+
+Your environment is perfect. Silent. Alone. Focused. No TTG room, no distractions, no outside emotions.
+
+Your mind is calm. Your decisions are clear. You're following the protocol.
+
+That's SYSTEM trading.
+
+Now here's what EMOTIONAL trading looks like:
+
+You jumped in early because the setup "looked good." That's not your system. That's impatience.
+
+You forced a trade without all 8 indicators aligned. That's not your system. That's FOMO.
+
+You're fighting the trend or trying to guess direction. That's not your system. That's ego.
+
+You moved your stops or you're thinking about moving them. That's not your system. That's fear or hope.
+
+You're distracted, anxious, or checking your P&L obsessively. That's not your system. That's emotional trading.
+
+Your decisions feel reactive. You're not sure why you're doing what you're doing. That's emotions running the show.
+
+You've practiced recognizing this difference for 10 months. You KNOW what system trading feels like. You KNOW what emotional trading feels like.
+
+So here's your emotional reset protocol for when emotions start creeping in:
+
+Step 1: Physically step back from the screens.
+Step 2: Take 3 deep breaths.
+Step 3: Ask yourself out loud: "Am I following my SYSTEM or my EMOTIONS right now?"
+Step 4: Review your Four Principles. Thunderstorm. Casino. Ambien. Calm State.
+Step 5: Check the time. Is it still between 10:15 AM and noon?
+
+If emotions are running the show, here's the rule: STOP TRADING FOR TODAY.
+
+That might feel drastic. It's not. It's better to miss a day than to blow up your emotional discipline. Missing one day costs you nothing. Trading emotionally can cost you everything.
+
+Remember: The system trades. Not your emotions.
+
+Trust your 10 months of practice. Trust your principles. Trust your fortress.
+
+You know what to do.`
+        },
+        {
+            id: 'risk-reward',
+            title: "Risk/Reward Reminder",
+            subtitle: "The Math Is On Your Side",
+            duration: "2-3 min",
+            icon: "📊",
+            category: "claude",
+            content: `Arnie, let's talk about your revolutionary risk/reward breakthrough.
+
+This is the game-changer you discovered. And it changes EVERYTHING.
+
+Your old method: Risk $600 to make $300. A 1-to-0.5 risk/reward ratio. You were grinding for small wins. High stress, low reward. The math was working against you.
+
+Your new method: Risk $600 to make $2,000 or more. A 3-to-1 risk/reward ratio or better. Now the math is overwhelmingly in your favor.
+
+Here's how it works:
+
+When the market is in an UPTREND and it quickly shoots DOWN to take out everyone's stops - creating that long tail down on the chart - you know what's coming. The snap-back.
+
+You place your buy stop ABOVE the price. You follow it down. And you let it trigger on the snap-back move WITH the trend.
+
+You're not guessing. You're not hoping. You're catching the move that most traders miss because they panicked on the dip.
+
+You're using other traders' fear to your advantage. Their stop-outs are your entry signal.
+
+This isn't gambling. This is professional-level trading. This is the result of 5 years of studying the market and understanding how it really moves.
+
+With a 3-to-1 ratio, you only need to be right 1 out of 4 times to break even. 1 out of 3 times to profit. That's incredibly forgiving.
+
+Even if you have 2 losing trades in a row at $600 each - that's $1,200 lost - your next winning trade at $2,000 puts you ahead.
+
+The math protects you. The math rewards patience. The math rewards discipline.
+
+So when you're tempted to take a smaller profit early - remember the math.
+When you're tempted to skip your setup because you "feel" something - remember the math.
+When you're frustrated by a loss - remember the math.
+
+3-to-1 or better. That's your edge. That's your breakthrough. That's why you're going to win over time.
+
+Trust the math.`
+        },
+        {
+            id: 'psychiatrist-protocol',
+            title: "The Psychiatrist's Protocol",
+            subtitle: "Protocol Over Impulse",
+            duration: "2-3 min",
+            icon: "🧠",
+            category: "claude",
+            content: `Arnie, you're a psychiatrist with 35 years of experience. Let's use that.
+
+When a patient comes to you with anxiety, you don't prescribe based on how you're feeling that day. You don't give them whatever drug "feels right." You follow the protocol. The evidence-based protocol that works.
+
+When a patient comes to you with depression, you don't wing it. You don't try random things hoping something works. You follow the protocol. Step by step.
+
+That's what makes you a professional. Not your feelings. Not your intuition. The protocol.
+
+Trading is identical.
+
+When the market opens, you don't trade based on how you're feeling. You don't enter positions because something "looks good." You follow the protocol.
+
+The protocol says: Wait until 10:15 AM.
+The protocol says: Wait for 8 or more indicators to align.
+The protocol says: Trade with the trend only.
+The protocol says: Stop at $2,100 profit.
+The protocol says: Stop at $1,200 loss.
+The protocol says: No trading after noon.
+
+You wouldn't prescribe Xanax to someone with mild anxiety just because they asked for it. That's not the protocol.
+
+You wouldn't keep adjusting medications every day because you're impatient. That's not the protocol.
+
+You follow the protocol because the protocol works.
+
+Your trading system is your protocol. It's evidence-based. You tested it for 10 months. You have the data.
+
+When your emotions say "jump in early" - that's the patient demanding Xanax. You don't comply. You follow the protocol.
+
+When your emotions say "just one more trade" after noon - that's not the protocol. You don't comply.
+
+You are a protocol-following professional. You've been one for 35 years.
+
+Be that professional now.
+
+Protocol over impulse. System over emotion. Evidence over feeling.
+
+That's what you do.`
+        },
+        {
+            id: 'emergency-reset',
+            title: "Emergency Emotional Reset",
+            subtitle: "When Things Go Wrong",
+            duration: "2-3 min",
+            icon: "🚨",
+            category: "claude",
+            content: `Arnie, if you're listening to this, something has gone wrong emotionally. That's okay. This is exactly what this talk is for.
+
+First: You are NOT broken. You are NOT failing. You're human. Emotions happen. The fact that you recognized it and came here? That's your training working.
+
+Now let's reset.
+
+Step 1: Step away from the screens. Physically. Stand up. Turn around. Face a different direction.
+
+Step 2: Take three deep breaths. Slow inhale through your nose for 4 counts. Hold for 4 counts. Slow exhale through your mouth for 6 counts. Do this three times. I'll wait.
+
+Good.
+
+Step 3: Ask yourself these questions out loud:
+
+"Did I follow my entry rules, or did I force a trade?"
+
+"Did I move my stops, or did I let the system manage them?"
+
+"Am I trying to 'make back' a loss right now?"
+
+"Am I trading because my system says to, or because I'm emotional?"
+
+Be honest with your answers.
+
+Step 4: Check your Four Principles.
+
+Thunderstorm: Am I trying to stay in the storm too long?
+Casino: Am I ignoring the shutoff because I want more?
+Ambien: Is it after noon? Am I impaired?
+Calm State: Was I even calm enough to trade today?
+
+Step 5: If any of those answers reveal emotional trading, here's the rule:
+
+STOP TRADING FOR TODAY.
+
+Not as punishment. As protection. Your fortress is working. This moment right here - you recognizing the problem and stopping - this IS discipline. This IS success.
+
+One day off costs you nothing.
+One emotional day can cost you everything you've built.
+
+Step 6: Tell Glitter Girl. "Ela, I had to stop early today. I caught myself getting emotional." She'll understand. She's your partner in this.
+
+Step 7: Tomorrow is a new day. The market will be there. Your system will be there. Your fortress will be there.
+
+You did the right thing by stopping.
+
+That's discipline. That's the psychiatrist's mind at work.
+
+Rest. Reset. Come back tomorrow.
+
+You've got this.`
+        },
+        {
+            id: 'daily-pep',
+            title: "Quick Daily Motivation",
+            subtitle: "60-Second Power Boost",
+            duration: "1 min",
+            icon: "⚡",
+            category: "claude",
+            content: `Arnie, let's go. 60 seconds.
+
+You know what to do.
+You know how to do it.
+The ONLY thing that could stop you is if your emotions interfere.
+
+And you've built a FORTRESS to prevent exactly that.
+
+Four Principles: Thunderstorm, Casino, Ambien, Calm State.
+Six layers of protection surrounding you.
+Automated systems that override impulse.
+Glitter Girl watching your back.
+35 years of following protocols.
+
+You are ready.
+
+Not "ready to try."
+Not "ready to see what happens."
+READY.
+
+5 years of technical mastery.
+10 months of disciplined practice.
+The best emotional state you've had in 5 years.
+
+Today, the system trades. Not your emotions.
+
+Wait for 10:15.
+Wait for your setup.
+Execute the plan.
+Follow the principles.
+Let the fortress protect you.
+
+You've got this.
+
+Let's make today a PROCESS win - not just a P&L win.
+
+Now go do what you've trained to do.`
+        },
+        {
+            id: 'calm-state',
+            title: "The Calm State Principle",
+            subtitle: "Strategy Two Access",
+            duration: "3-4 min",
+            icon: "🧘",
+            category: "claude",
+            content: `Arnie, let's talk about the Calm State Principle - your fourth principle.
+
+This principle was discovered on December 10, 2025.
+
+You woke up that morning incredibly calm. Not excited. Not anxious. Not revved up. Just... peaceful.
+
+And you said to yourself: "I'm going to try something different today."
+
+Instead of waiting until 10:30 with your standard criteria, you started at 8:30 AM - but ONLY looking for extreme reversals. Markets that had gone way way up and started reversing down with all indicators confirming. Or way way down and started reversing up with all indicators confirming.
+
+You also tightened your breakeven trigger from $100 profit to $60 profit.
+
+By 10:00 AM, you were up $3,000.
+
+Here's what this teaches us:
+
+The key insight ISN'T the strategy change - it's the STATE you were in.
+
+"Incredibly calm" isn't just a nice feeling. It's a completely different neurological operating system. Your prefrontal cortex - rational decision-making - was fully online. Your amygdala - fear and greed - was quiet.
+
+That calm state let you:
+See the extreme reversals clearly without FOMO.
+Execute without hesitation or second-guessing.
+Move stops to breakeven at $60 without anxiety.
+Stay patient and disciplined.
+Trade earlier because your judgment wasn't clouded.
+
+This is ONE data point, not a proven system yet. But it raises important questions:
+
+Can you reliably ACCESS that calm state? Is it something that happens TO you, or something you can cultivate?
+
+The Calm State Principle says: Be curious about this. Pay attention to your emotional state BEFORE you trade.
+
+On days when you're unbelievably calm, you may have access to Strategy Two - extreme reversals, earlier trading, tighter management.
+
+On days when you're NOT in that calm state? Stick to Strategy One. The original system. The proven approach.
+
+The calmness isn't optional. It's the prerequisite.
+
+That's the Calm State Principle.`
+        }
+    ];
+    
+    // =====================================================
+    // EXTERNAL WISDOM - GENERAL TRADING PSYCHOLOGY
+    // =====================================================
+    const EXTERNAL_WISDOM = [
+        {
+            id: 'external-discipline',
+            title: "Trading Discipline Fundamentals",
+            subtitle: "Universal Truths",
+            duration: "2-3 min",
+            icon: "📚",
+            category: "external",
+            content: `The fundamentals of trading discipline apply to every trader, everywhere.
+
+Rule number one: The market doesn't care about you. It doesn't know your name. It doesn't know your goals. It doesn't know if you need to make rent this month. It just moves.
+
+Rule number two: You cannot control the market. You can only control yourself. Your entries. Your exits. Your position size. Your emotional state.
+
+Rule number three: Consistency beats intensity. One good trade followed by ten emotional trades puts you behind. Ten consistent trades following your system puts you ahead.
+
+Rule number four: Your P&L today is not a measure of your worth. Green days don't make you smart. Red days don't make you stupid. Only your process matters.
+
+Rule number five: Every professional trader has lost money. Every single one. The difference is how they respond. Professionals follow their system. Amateurs follow their emotions.
+
+Rule number six: The best trade is often no trade. Not every day has a setup. Not every setup is worth taking. Patience isn't just a virtue - it's a strategy.
+
+Rule number seven: Your edge is in your rules. If you break your rules, you have no edge. If you follow your rules, the math works in your favor over time.
+
+These aren't opinions. These are the fundamentals that every successful trader has learned, usually the hard way.`
+        },
+        {
+            id: 'external-psychology',
+            title: "Trading Psychology Basics",
+            subtitle: "Understanding Your Mind",
+            duration: "2-3 min",
+            icon: "🧠",
+            category: "external",
+            content: `Your brain wasn't designed for trading. Understanding this is the first step to mastering it.
+
+Fear and greed are survival mechanisms. When cavemen saw a predator, fear saved their lives. When they found food, greed helped them stockpile for winter.
+
+But in trading, these same instincts work against you.
+
+Fear makes you exit winners too early. You see profit, you're afraid of losing it, so you grab it before your target.
+
+Fear makes you hold losers too long. You're afraid to realize the loss, so you hope it comes back.
+
+Greed makes you hold winners too long. You see profit growing and you want more, more, more - until it reverses.
+
+Greed makes you overtrade. One win isn't enough. You want another. And another. Until you give it all back.
+
+The solution isn't to eliminate these emotions. That's impossible. The solution is to build systems that work despite them.
+
+Automated stops work because they don't feel fear.
+Profit targets work because they don't feel greed.
+Rules work because they don't have emotions at all.
+
+This is why your system matters more than your instincts. Your instincts evolved for survival, not for trading.
+
+Trust the system. It doesn't feel. It just works.`
+        },
+        {
+            id: 'external-patience',
+            title: "The Power of Patience",
+            subtitle: "Waiting Is Winning",
+            duration: "2 min",
+            icon: "⏳",
+            category: "external",
+            content: `The best traders in the world spend most of their time doing nothing.
+
+Not because they're lazy. Because they're patient.
+
+They wait for their setup. They wait for conditions to align. They wait for the high-probability moment.
+
+And then - only then - they act.
+
+Amateur traders can't wait. Every candle looks like an opportunity. Every move looks like money being left on the table.
+
+Professional traders know better. Most candles are noise. Most moves are traps. The real opportunities are rare.
+
+Warren Buffett said it best: The stock market is a device for transferring money from the impatient to the patient.
+
+The same is true for futures. For forex. For any market.
+
+The patient traders accumulate wealth. The impatient traders fund them.
+
+When you're sitting in front of your screen and nothing is happening, that's not failure. That's discipline. That's patience. That's the professional approach.
+
+The trade will come. Your setup will appear. And when it does, you'll be ready - because you weren't exhausted from chasing garbage all morning.
+
+Wait for it.`
+        }
+    ];
+    
+    // =====================================================
+    // BREATHING EXERCISES
+    // =====================================================
+    const BREATHING_EXERCISES = [
+        {
+            name: "Box Breathing",
+            subtitle: "Navy SEAL Technique",
+            description: "4-4-4-4 pattern used by special forces to stay calm under pressure",
+            pattern: { inhale: 4, hold1: 4, exhale: 4, hold2: 4 },
+            cycles: 4,
+            icon: "📦"
+        },
+        {
+            name: "4-7-8 Relaxation",
+            subtitle: "Deep Calm",
+            description: "Activates parasympathetic nervous system for deep relaxation",
+            pattern: { inhale: 4, hold1: 7, exhale: 8, hold2: 0 },
+            cycles: 4,
+            icon: "🌊"
+        },
+        {
+            name: "Quick Reset",
+            subtitle: "30-Second Calm",
+            description: "Fast technique to reset during trading",
+            pattern: { inhale: 3, hold1: 2, exhale: 4, hold2: 0 },
+            cycles: 3,
+            icon: "⚡"
+        }
+    ];
+
+    // =====================================================
+    // WISDOM QUOTES - FROM OUR CONVERSATIONS
+    // =====================================================
+    const WISDOM_QUOTES = {
+        claude: [
+            { text: "You know what to do. You know how to do it. The ONLY thing that could stop you is if your emotions interfere.", author: "Claude" },
+            { text: "The system trades, not your emotions.", author: "Claude" },
+            { text: "Grab what you came for and RUN back to safety.", author: "Thunderstorm Principle" },
+            { text: "The casino stays open, but the winner walks away.", author: "Casino Principle" },
+            { text: "After 12:00 PM, you're trading on Ambien.", author: "Ambien Principle" },
+            { text: "You're not learning anymore - you're EXECUTING.", author: "Claude" },
+            { text: "Protocol over impulse. System over emotion. Evidence over feeling.", author: "Claude" },
+            { text: "It's better to miss a day than to blow up your emotional discipline.", author: "Claude" },
+            { text: "Your 6-layer fortress protects you from yourself.", author: "Claude" },
+            { text: "The math is overwhelmingly in your favor.", author: "Claude" }
+        ],
+        external: [
+            { text: "The goal of a successful trader is to make the best trades. Money is secondary.", author: "Alexander Elder" },
+            { text: "The market is a device for transferring money from the impatient to the patient.", author: "Warren Buffett" },
+            { text: "It's not whether you're right or wrong that's important, but how much money you make when you're right.", author: "George Soros" },
+            { text: "The elements of good trading are: cutting losses, cutting losses, and cutting losses.", author: "Ed Seykota" },
+            { text: "Win or lose, everybody gets what they want from the market.", author: "Ed Seykota" },
+            { text: "Trading doesn't just reveal your character, it also builds it if you stay in the game long enough.", author: "Yvan Byeajee" }
+        ]
+    };
+    
+    // =====================================================
+    // MAIN APPLICATION COMPONENT
+    // =====================================================
+
+    function TradingMentorApp() {
+        // State
+        const [currentView, setCurrentView] = useState('home');
+        const [isSpeaking, setIsSpeaking] = useState(false);
+        const [isPaused, setIsPaused] = useState(false);
+        const [currentTalkId, setCurrentTalkId] = useState(null);
+        const [availableVoices, setAvailableVoices] = useState([]);
+        const [selectedVoiceIndex, setSelectedVoiceIndex] = useState(() => parseInt(localStorage.getItem('arnieDefaultVoice') || '0'));
+        const [speechRate, setSpeechRate] = useState(() => parseFloat(localStorage.getItem('arnieDefaultRate') || '0.95'));
+        const [mentorStreak, setMentorStreak] = useState(() => parseInt(localStorage.getItem('arnieMentorStreak') || '0'));
+        const [breathingActive, setBreathingActive] = useState(false);
+        const [breathPhase, setBreathPhase] = useState(null);
+        const [breathTimer, setBreathTimer] = useState(0);
+        const [toast, setToast] = useState(null);
+        const [voicesLoaded, setVoicesLoaded] = useState(false);
+        const [savedTalks, setSavedTalks] = useState(() => JSON.parse(localStorage.getItem('arnieSavedTalks') || '[]'));
+        const [voiceFilter, setVoiceFilter] = useState(() => localStorage.getItem('arnieVoiceFilter') || 'female');
+        const [speechPitch, setSpeechPitch] = useState(() => parseFloat(localStorage.getItem('arnieDefaultPitch') || '1.0'));
+        const [autoPlayMorning, setAutoPlayMorning] = useState(() => localStorage.getItem('arnieAutoPlay') === 'true');
+        const [showOnlyFemale, setShowOnlyFemale] = useState(() => localStorage.getItem('arnieShowOnlyFemale') !== 'false');
+        const [settingsSaved, setSettingsSaved] = useState(false);
+        
+        // Manual State
+        const [manualSection, setManualSection] = useState('manual-intro');
+        const [manualSearch, setManualSearch] = useState('');
+        
+        const filteredManualSections = MANUAL_SECTIONS.filter(s => 
+            !manualSearch.trim() || 
+            s.title.toLowerCase().includes(manualSearch.toLowerCase()) ||
+            s.category.toLowerCase().includes(manualSearch.toLowerCase())
+        );
+
+        // Refs
+        const speechQueueRef = useRef([]);
+        const currentIndexRef = useRef(0);
+        const breathingRef = useRef(null);
+        
+        // Load voices - Enhanced: Prioritize female voices
+        useEffect(() => {
+            let attempts = 0;
+            const maxAttempts = 30; // Android can be slow to populate voices
+            let intervalId = null;
+
+            const normalize = (s) => (s || '').toString().toLowerCase();
+
+            const warmUpSpeech = () => {
+                // Some Android builds only fully initialize speech after a user gesture.
+                // This tries to "prime" speech in a safe way.
+                try {
+                    const u = new SpeechSynthesisUtterance(' ');
+                    u.volume = 0;     // silent
+                    u.rate = 1;
+                    window.speechSynthesis.speak(u);
+                    window.speechSynthesis.cancel();
+                } catch (e) {
+                    // Ignore (no user gesture yet, or speech not supported)
+                }
+            };
+
+            const pickVoices = (allVoices) => {
+                // Prefer en-US, then any English, then anything available.
+                const english = allVoices.filter(v => normalize(v.lang).startsWith('en'));
+                const enUS = english.filter(v => normalize(v.lang) === 'en-us' || normalize(v.lang).startsWith('en-us'));
+                const candidates = (enUS.length ? enUS : (english.length ? english : allVoices));
+
+                // De-duplicate by name+lang
+                const seen = new Set();
+                const deduped = [];
+                for (const v of candidates) {
+                    const key = `${v.name}__${v.lang}`;
+                    if (!seen.has(key)) {
+                        seen.add(key);
+                        deduped.push(v);
+                    }
+                }
+                return deduped;
+            };
+
+            const loadVoices = () => {
+                const synth = window.speechSynthesis;
+                if (!synth || typeof synth.getVoices !== 'function') {
+                    console.warn('speechSynthesis not available in this browser/context');
+                    setVoicesLoaded(true); // avoid infinite "loading"
+                    return;
+                }
+
+                const allVoices = synth.getVoices() || [];
+                const candidateVoices = pickVoices(allVoices);
+
+                // Sort: prioritize female voices first, then by quality indicators
+                const sortedVoices = candidateVoices.sort((a, b) => {
+                    const aName = normalize(a.name);
+                    const bName = normalize(b.name);
+
+                    // Gender scoring (female voices first)
+                    const aFemale = getVoiceGender(a.name) === 'female' ? 10 : 0;
+                    const bFemale = getVoiceGender(b.name) === 'female' ? 10 : 0;
+
+                    // Quality scoring
+                    const aScore = aFemale + (aName.includes('natural') ? 5 : 0) + (aName.includes('neural') ? 4 : 0) + (aName.includes('enhanced') ? 3 : 0) + (aName.includes('microsoft') ? 2 : 0) + (aName.includes('google') ? 1 : 0);
+                    const bScore = bFemale + (bName.includes('natural') ? 5 : 0) + (bName.includes('neural') ? 4 : 0) + (bName.includes('enhanced') ? 3 : 0) + (bName.includes('microsoft') ? 2 : 0) + (bName.includes('google') ? 1 : 0);
+
+                    return bScore - aScore || aName.localeCompare(bName);
+                });
+
+                if (sortedVoices.length > 0) {
+                    setAvailableVoices(sortedVoices);
+                    setVoicesLoaded(true);
+
+                    // Auto-select first female voice if available
+                    const firstFemaleIdx = sortedVoices.findIndex(v => getVoiceGender(v.name) === 'female');
+                    if (firstFemaleIdx >= 0) setSelectedVoiceIndex(firstFemaleIdx);
+
+                    console.log('Loaded', sortedVoices.length, 'voices');
+                    if (intervalId) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+                } else {
+                    // No voices yet — keep trying for a bit (Android often returns [] for a while)
+                    attempts++;
+                    if (attempts === 1) warmUpSpeech();
+
+                    if (attempts >= maxAttempts) {
+                        console.warn('No voices found after retries. Continuing without a loaded voice list.');
+                        setVoicesLoaded(true); // stop spinner; app can still try to speak later
+                        if (intervalId) {
+                            clearInterval(intervalId);
+                            intervalId = null;
+                        }
+                    }
+                }
+            };
+
+            // Try immediately
+            loadVoices();
+
+            // Listen for the browser event (works on many desktops)
+            try {
+                window.speechSynthesis.onvoiceschanged = loadVoices;
+            } catch (e) {}
+
+            // Also poll for voices (helps on Android where onvoiceschanged can be unreliable)
+            intervalId = setInterval(loadVoices, 500);
+
+            // Add a user-gesture kick (helps when Android won't init speech until a tap)
+            const kick = () => {
+                warmUpSpeech();
+                loadVoices();
+            };
+            document.addEventListener('click', kick, { once: true });
+            document.addEventListener('touchstart', kick, { once: true });
+
+            return () => {
+                if (intervalId) clearInterval(intervalId);
+                try { window.speechSynthesis.onvoiceschanged = null; } catch (e) {}
+                document.removeEventListener('click', kick);
+                document.removeEventListener('touchstart', kick);
+            };
+        }, []);
+        
+        // Get voice gender (approximation based on common voice names)
+        // Get voice gender (comprehensive detection for US English voices)
+        const getVoiceGender = (name) => {
+            const lowerName = name.toLowerCase();
+            // Comprehensive list of female voice names from Microsoft, Google, Apple, Amazon
+            const femaleNames = [
+                'zira', 'eva', 'jenny', 'aria', 'sara', 'sonia', 'emma', 'ivy', 'joanna', 'kendra', 
+                'kimberly', 'salli', 'female', 'woman', 'samantha', 'victoria', 'karen', 'moira', 
+                'tessa', 'fiona', 'veena', 'susan', 'heather', 'allison', 'ava', 'olivia', 'nicky',
+                'chloe', 'emily', 'jessica', 'nicole', 'ashley', 'amanda', 'michelle', 'stephanie',
+                'heera', 'linda', 'catherine', 'amy', 'joelle', 'nancy', 'betty', 'elizabeth',
+                'natasha', 'paulina', 'helena', 'ewa', 'lisa', 'anna', 'marie', 'monica',
+                'hedda', 'hortense', 'elsa', 'julie', 'naayf', 'kate', 'laura', 'hazel',
+                'libby', 'microsoft jenny', 'microsoft aria', 'microsoft sara', 'google us english female',
+                'alex', 'shelley', 'sandy', 'claire', 'martha', 'ruth', 'danielle', 'ellen'
+            ];
+            const maleNames = [
+                'david', 'mark', 'guy', 'eric', 'brian', 'joey', 'matthew', 'justin', 'kevin', 
+                'male', 'man', 'james', 'richard', 'chris', 'michael', 'daniel', 'john', 'paul',
+                'ryan', 'sean', 'christopher', 'roger', 'george', 'tom', 'fred', 'ralph',
+                'microsoft david', 'microsoft mark', 'microsoft guy', 'google us english male',
+                'rishi', 'thomas', 'oliver'
+            ];
+            
+            if (femaleNames.some(n => lowerName.includes(n))) return 'female';
+            if (maleNames.some(n => lowerName.includes(n))) return 'male';
+            return 'unknown';
+        };
+        
+        // FIXED: TTS Function with better handling
+        const speakText = useCallback((text, talkId = null) => {
+            if (!voicesLoaded || availableVoices.length === 0) {
+                showToast('⏳ Voices still loading, please wait...');
+                return;
+            }
+            
+            // Cancel any existing speech
+            window.speechSynthesis.cancel();
+            
+            setIsSpeaking(true);
+            setIsPaused(false);
+            setCurrentTalkId(talkId);
+            
+            // Update streak
+            const today = new Date().toDateString();
+            const lastListen = localStorage.getItem('arnieMentorLastListen');
+            if (lastListen !== today) {
+                const newStreak = mentorStreak + 1;
+                setMentorStreak(newStreak);
+                localStorage.setItem('arnieMentorStreak', newStreak.toString());
+                localStorage.setItem('arnieMentorLastListen', today);
+            }
+            
+            // Split into sentences for smoother delivery
+            const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+            speechQueueRef.current = sentences;
+            currentIndexRef.current = 0;
+            
+            speakNextSentence();
+        }, [voicesLoaded, availableVoices, mentorStreak, selectedVoiceIndex, speechRate]);
+        
+        const speakNextSentence = useCallback(() => {
+            if (currentIndexRef.current >= speechQueueRef.current.length) {
+                setIsSpeaking(false);
+                setCurrentTalkId(null);
+                showToast('✓ Finished');
+                return;
+            }
+            
+            const sentence = speechQueueRef.current[currentIndexRef.current].trim();
+            if (!sentence) {
+                currentIndexRef.current++;
+                speakNextSentence();
+                return;
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(sentence);
+            
+            if (availableVoices[selectedVoiceIndex]) {
+                utterance.voice = availableVoices[selectedVoiceIndex];
+            }
+            
+            utterance.rate = speechRate;
+            utterance.pitch = speechPitch;
+            utterance.volume = 1.0;
+            
+            utterance.onend = () => {
+                currentIndexRef.current++;
+                // Small pause between sentences for natural flow
+                setTimeout(speakNextSentence, 200);
+            };
+            
+            utterance.onerror = (e) => {
+                console.error('Speech error:', e);
+                currentIndexRef.current++;
+                speakNextSentence();
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        }, [availableVoices, selectedVoiceIndex, speechRate]);
+        
+        const stopSpeaking = () => {
+            window.speechSynthesis.cancel();
+            speechQueueRef.current = [];
+            currentIndexRef.current = 0;
+            setIsSpeaking(false);
+            setIsPaused(false);
+            setCurrentTalkId(null);
+        };
+        
+        const pauseSpeaking = () => {
+            window.speechSynthesis.pause();
+            setIsPaused(true);
+        };
+        
+        const resumeSpeaking = () => {
+            window.speechSynthesis.resume();
+            setIsPaused(false);
+        };
+        
+        const showToast = (msg) => {
+            setToast(msg);
+            setTimeout(() => setToast(null), 3000);
+        };
+        
+        // Save talk functionality
+        const saveTalk = (talk) => {
+            const saved = {
+                ...talk,
+                savedAt: new Date().toISOString()
+            };
+            const newSaved = [...savedTalks, saved];
+            setSavedTalks(newSaved);
+            localStorage.setItem('arnieSavedTalks', JSON.stringify(newSaved));
+            showToast('✓ Saved to favorites');
+        };
+        
+        const removeSavedTalk = (idx) => {
+            const newSaved = savedTalks.filter((_, i) => i !== idx);
+            setSavedTalks(newSaved);
+            localStorage.setItem('arnieSavedTalks', JSON.stringify(newSaved));
+            showToast('Removed from favorites');
+        };
+        
+        // Breathing exercise
+        const startBreathing = (exercise) => {
+            if (breathingRef.current) clearTimeout(breathingRef.current);
+            setBreathingActive(true);
+            runBreathCycle(exercise, 0);
+        };
+        
+        const runBreathCycle = (ex, cycle) => {
+            if (cycle >= ex.cycles) {
+                setBreathingActive(false);
+                setBreathPhase(null);
+                showToast('✓ Exercise complete');
+                return;
+            }
+            
+            const runPhase = (phase, duration, next) => {
+                setBreathPhase(phase);
+                setBreathTimer(duration);
+                
+                let remaining = duration;
+                const countdown = setInterval(() => {
+                    remaining--;
+                    setBreathTimer(remaining);
+                    if (remaining <= 0) clearInterval(countdown);
+                }, 1000);
+                
+                breathingRef.current = setTimeout(next, duration * 1000);
+            };
+            
+            runPhase('BREATHE IN', ex.pattern.inhale, () => {
+                if (ex.pattern.hold1 > 0) {
+                    runPhase('HOLD', ex.pattern.hold1, () => {
+                        runPhase('BREATHE OUT', ex.pattern.exhale, () => {
+                            if (ex.pattern.hold2 > 0) {
+                                runPhase('HOLD', ex.pattern.hold2, () => runBreathCycle(ex, cycle + 1));
+                            } else {
+                                runBreathCycle(ex, cycle + 1);
+                            }
+                        });
+                    });
+                } else {
+                    runPhase('BREATHE OUT', ex.pattern.exhale, () => runBreathCycle(ex, cycle + 1));
+                }
+            });
+        };
+        
+        const stopBreathing = () => {
+            if (breathingRef.current) clearTimeout(breathingRef.current);
+            setBreathingActive(false);
+            setBreathPhase(null);
+        };
+        
+        // Trading window status
+        const now = new Date();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        const day = now.getDay();
+        const isValidDay = day >= 1 && day <= 4;
+        const isValidTime = (hour === 10 && minute >= 15) || hour === 11 || (hour === 12 && minute === 0);
+        const isPreMarket = hour < 10 || (hour === 10 && minute < 15);
+        const isAmbienZone = hour >= 12 && minute > 0;
+        
+        // =====================================================
+
+        // =====================================================
+        // MANUAL CONTENT RENDERER
+        // =====================================================
+        const renderManualContent = () => {
+            const section = MANUAL_CONTENT[manualSection];
+            if (!section) return <div className="text-center text-slate-400">Select a section from the sidebar</div>;
+            
+            return (
+                <div className="manual-content-wrapper fade-in">
+                    <div className="manual-feature-header">
+                        <h1 className="manual-feature-title">
+                            <span className="text-3xl">{section.icon}</span>
+                            {section.title}
+                        </h1>
+                        <p className="manual-feature-subtitle">{section.subtitle}</p>
+                    </div>
+                    
+                    {section.sections && section.sections.map((s, idx) => {
+                        if (s.type === 'steps') {
+                            return (
+                                <div key={idx} className="manual-section">
+                                    <h3>{s.title}</h3>
+                                    <div className="manual-steps">
+                                        {s.steps.map((step, stepIdx) => (
+                                            <div key={stepIdx} className="manual-step">
+                                                <div className="manual-step-number">{stepIdx + 1}</div>
+                                                <div className="manual-step-content">
+                                                    <h4>{step.title}</h4>
+                                                    <p>{step.desc}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        } else if (s.type === 'tip') {
+                            return (
+                                <div key={idx} className="manual-tip-box">
+                                    <h4>💡 {s.title}</h4>
+                                    <p style={{margin: 0, color: '#a7f3d0'}}>{s.content}</p>
+                                </div>
+                            );
+                        } else if (s.type === 'warning') {
+                            return (
+                                <div key={idx} className="manual-warning-box">
+                                    <h4>⚠️ {s.title}</h4>
+                                    <p style={{margin: 0, color: '#fcd34d'}}>{s.content}</p>
+                                </div>
+                            );
+                        } else if (s.type === 'success') {
+                            return (
+                                <div key={idx} className="manual-success-box">
+                                    <h4>{s.title}</h4>
+                                    <p style={{margin: 0, color: '#cbd5e1'}}>{s.content}</p>
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div key={idx} className="manual-section">
+                                    <h3>{s.title}</h3>
+                                    {s.content.split('\n\n').map((para, pIdx) => (
+                                        <p key={pIdx} dangerouslySetInnerHTML={{
+                                            __html: para
+                                                .replace(/\*\*(.*?)\*\*/g, '<strong style="color: #f1f5f9;">$1</strong>')
+                                                .replace(/• /g, '<br/>• ')
+                                        }} />
+                                    ))}
+                                </div>
+                            );
+                        }
+                    })}
+                </div>
+            );
+        };
+
+
+        // =====================================================
+        // RENDER
+        // =====================================================
+        return (
+            <div className="flex h-screen">
+                {/* Sidebar */}
+                <div className="w-60 bg-slate-900/80 border-r border-slate-700/50 flex flex-col">
+                    <div className="p-5 border-b border-slate-700/50">
+                        <h1 className="text-xl font-bold text-orange-400">Trading Mentor Pro</h1>
+                        <p className="text-slate-500 text-sm">Your Emotional Fortress</p>
+                    </div>
+                    
+                    <nav className="flex-1 py-3 overflow-y-auto">
+                        {[
+                            { id: 'home', label: 'Dashboard', icon: '🏠' },
+                            { id: 'claude-mentor', label: 'Claude My Mentor', icon: '🎯' },
+                            { id: 'external-wisdom', label: 'External Wisdom', icon: '📚' },
+                            { id: 'principles', label: 'Four Principles', icon: '⚡' },
+                            { id: 'fortress', label: '6-Layer Fortress', icon: '🏰' },
+                            { id: 'advantages', label: '8 Advantages', icon: '💪' },
+                            { id: 'breathing', label: 'Breathing', icon: '🫁' },
+                            { id: 'quotes', label: 'Wisdom Quotes', icon: '💬' },
+                            { id: 'saved', label: 'Saved Talks', icon: '⭐' },
+                            { id: 'settings', label: 'Settings', icon: '⚙️' }
+                        ].map(item => (
+                            <button
+                                key={item.id}
+                                onClick={() => setCurrentView(item.id)}
+                                className={`sidebar-item w-full text-left px-5 py-3 flex items-center gap-3 ${
+                                    currentView === item.id ? 'active text-orange-400 font-medium' : 'text-slate-400'
+                                }`}
+                            >
+                                <span className="text-lg">{item.icon}</span>
+                                <span>{item.label}</span>
+                            </button>
+                        ))}
+                        
+                        {/* MANUAL BUTTON */}
+                        <div className="border-t border-slate-700/50 mt-3 pt-3 px-2">
+                            <button
+                                onClick={() => setCurrentView('manual')}
+                                className={`w-full text-left px-4 py-3 flex items-center gap-3 rounded-lg ${
+                                    currentView === 'manual' 
+                                        ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold' 
+                                        : 'bg-slate-800/50 text-orange-300 hover:bg-slate-700/50 border border-orange-500/30'
+                                }`}
+                            >
+                                <span className="text-lg">📖</span>
+                                <span>User Manual</span>
+                            </button>
+                        </div>
+                    </nav>
+                    
+                    <div className="p-4 border-t border-slate-700/50">
+                        <div className="card p-4 text-center">
+                            <span className="text-3xl">🔥</span>
+                            <p className="text-orange-400 font-bold text-lg mt-1">{mentorStreak} Day Streak</p>
+                            <p className="text-slate-500 text-xs">Keep listening daily!</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* WHITE MANUAL SIDEBAR */}
+                <div className={`manual-sidebar ${currentView === 'manual' ? 'visible' : ''}`}>
+                    <div className="manual-sidebar-header">
+                        <h2>📖 User Manual</h2>
+                        <p>Trading Mentor Pro - Complete Guide</p>
+                    </div>
+                    
+                    <div className="manual-sidebar-search">
+                        <input 
+                            type="text" 
+                            placeholder="🔍 Search features..."
+                            value={manualSearch}
+                            onChange={(e) => setManualSearch(e.target.value)}
+                        />
+                    </div>
+                    
+                    <div className="manual-toc-list">
+                        {Object.entries(MANUAL_CATEGORIES).map(([catId, cat]) => {
+                            const catSections = filteredManualSections.filter(s => s.category === catId);
+                            if (catSections.length === 0) return null;
+                            return (
+                                <div key={catId}>
+                                    <div className="manual-toc-section" style={{borderLeft: `3px solid ${cat.color}`}}>
+                                        {cat.name}
+                                    </div>
+                                    {catSections.map(section => (
+                                        <div 
+                                            key={section.id}
+                                            className={`manual-toc-item ${manualSection === section.id ? 'active' : ''}`}
+                                            onClick={() => setManualSection(section.id)}
+                                        >
+                                            <span className="manual-toc-icon">{section.icon}</span>
+                                            <span>{section.title}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    
+                    <div className="manual-sidebar-footer">
+                        <p>Trading Mentor Pro</p>
+                        <p>Built with 🔥 for Arnie</p>
+                    </div>
+                </div>
+                
+                {/* Main Content */}
+                <div className={`flex-1 flex flex-col overflow-hidden ${currentView === 'manual' ? 'main-with-manual' : ''}`}>
+                    {/* Header with playback controls */}
+                    <div className="h-16 bg-slate-900/50 border-b border-slate-700/50 flex items-center justify-between px-6">
+                        <div className="flex items-center gap-4">
+                            {isSpeaking && (
+                                <>
+                                    <div className="speaking-indicator">
+                                        <span></span><span></span><span></span><span></span>
+                                    </div>
+                                    <span className="text-orange-400 font-medium">Playing...</span>
+                                    <button onClick={isPaused ? resumeSpeaking : pauseSpeaking} className="btn-secondary py-2 px-4 text-sm">
+                                        {isPaused ? '▶️ Resume' : '⏸️ Pause'}
+                                    </button>
+                                    <button onClick={stopSpeaking} className="btn-secondary py-2 px-4 text-sm">
+                                        ⏹️ Stop
+                                    </button>
+                                </>
+                            )}
+                            {!voicesLoaded && <span className="text-yellow-400 text-sm">Loading voices...</span>}
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <span className="text-slate-400 text-sm">Speed: {speechRate.toFixed(2)}x</span>
+                            <input 
+                                type="range" 
+                                min="0.7" 
+                                max="1.3" 
+                                step="0.05" 
+                                value={speechRate}
+                                onChange={(e) => setSpeechRate(parseFloat(e.target.value))} 
+                                className="w-24 accent-orange-500" 
+                            />
+                        </div>
+                    </div>
+                    
+                    {/* Content Area */}
+                    <main className="flex-1 overflow-y-auto p-6">
+                        
+                        {/* MANUAL VIEW */}
+                        {currentView === 'manual' && renderManualContent()}
+
+                        {/* HOME DASHBOARD */}
+                        {currentView === 'home' && (
+                            <div className="max-w-3xl mx-auto space-y-6">
+                                <div className="text-center mb-8">
+                                    <h2 className="text-4xl font-bold text-white mb-2">Welcome Back, Arnie</h2>
+                                    <p className="text-slate-400 text-lg">The system trades, not your emotions.</p>
+                                </div>
+                                
+                                {/* Trading Window Status */}
+                                <div className={`text-center py-4 rounded-xl font-medium ${
+                                    isValidDay && isValidTime ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
+                                    isValidDay && isPreMarket ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+                                    'bg-red-500/20 text-red-400 border border-red-500/30'
+                                }`}>
+                                    {isValidDay && isValidTime && '🟢 TRADING WINDOW OPEN - Execute Your System'}
+                                    {isValidDay && isPreMarket && '🔵 Pre-Market - Prepare Your Fortress'}
+                                    {isValidDay && isAmbienZone && '🔴 AMBIEN ZONE - No Trading After Noon'}
+                                    {!isValidDay && '🔴 Weekend/Friday - Markets Closed for You'}
+                                </div>
+                                
+                                {/* Quick Start */}
+                                <button 
+                                    onClick={() => speakText(MENTOR_TALKS[0].content, 'morning-briefing')}
+                                    disabled={!voicesLoaded}
+                                    className="w-full btn-primary py-5 text-xl disabled:opacity-50"
+                                >
+                                    🌅 Start Complete Morning Briefing
+                                </button>
+                                
+                                {/* Quick Access Grid */}
+                                <div className="grid grid-cols-3 gap-4 mt-6">
+                                    <button onClick={() => setCurrentView('principles')} className="card p-5 text-center hover:border-orange-500/50 transition-all">
+                                        <span className="text-4xl">⚡</span>
+                                        <p className="text-white font-medium mt-2">4 Principles</p>
+                                    </button>
+                                    <button onClick={() => setCurrentView('breathing')} className="card p-5 text-center hover:border-orange-500/50 transition-all">
+                                        <span className="text-4xl">🫁</span>
+                                        <p className="text-white font-medium mt-2">Breathing</p>
+                                    </button>
+                                    <button onClick={() => setCurrentView('fortress')} className="card p-5 text-center hover:border-orange-500/50 transition-all">
+                                        <span className="text-4xl">🏰</span>
+                                        <p className="text-white font-medium mt-2">Fortress</p>
+                                    </button>
+                                </div>
+                                
+                                {/* Today's Focus */}
+                                <div className="card p-6">
+                                    <h3 className="text-xl font-bold text-white mb-4">Today's Focus</h3>
+                                    <div className="space-y-3">
+                                        <div className="flex items-center gap-3 text-slate-300">
+                                            <span className="text-2xl">⛈️</span>
+                                            <span>Thunderstorm: Grab profits and RUN to safety</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 text-slate-300">
+                                            <span className="text-2xl">🎰</span>
+                                            <span>Casino: At $2,100, walk away. The casino stays open.</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 text-slate-300">
+                                            <span className="text-2xl">💊</span>
+                                            <span>Ambien: No trading after 12:00 PM.</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 text-slate-300">
+                                            <span className="text-2xl">🧘</span>
+                                            <span>Calm State: Only Strategy Two when unbelievably calm.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Random Quote */}
+                                <div className="card p-6 bg-gradient-to-r from-orange-600/20 to-amber-600/20 border-orange-500/30">
+                                    <p className="text-white text-lg italic">"{WISDOM_QUOTES.claude[Math.floor(Math.random() * WISDOM_QUOTES.claude.length)].text}"</p>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* CLAUDE MY MENTOR */}
+                        {currentView === 'claude-mentor' && (
+                            <div className="max-w-3xl mx-auto space-y-6">
+                                <div className="text-center mb-6">
+                                    <h2 className="text-3xl font-bold text-white mb-2">🎯 Claude My Mentor</h2>
+                                    <p className="text-slate-400">Personal talks from our conversations - built just for you</p>
+                                </div>
+                                
+                                {MENTOR_TALKS.map((talk) => (
+                                    <div key={talk.id} className="card p-5 hover:border-orange-500/30 transition-all">
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex items-center gap-4">
+                                                <span className="text-4xl">{talk.icon}</span>
+                                                <div>
+                                                    <h3 className="text-xl font-bold text-white">{talk.title}</h3>
+                                                    <p className="text-slate-400">{talk.subtitle}</p>
+                                                    <p className="text-slate-500 text-sm mt-1">⏱️ {talk.duration}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button 
+                                                    onClick={() => speakText(talk.content, talk.id)}
+                                                    disabled={!voicesLoaded || (isSpeaking && currentTalkId === talk.id)}
+                                                    className="btn-primary py-2 px-4 text-sm"
+                                                >
+                                                    {isSpeaking && currentTalkId === talk.id ? '🔊 Playing...' : '▶️ Play'}
+                                                </button>
+                                                <button 
+                                                    onClick={() => saveTalk(talk)}
+                                                    className="btn-secondary py-2 px-3 text-sm"
+                                                >
+                                                    ⭐
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        
+                        {/* EXTERNAL WISDOM */}
+                        {currentView === 'external-wisdom' && (
+                            <div className="max-w-3xl mx-auto space-y-6">
+                                <div className="text-center mb-6">
+                                    <h2 className="text-3xl font-bold text-white mb-2">📚 External Wisdom</h2>
+                                    <p className="text-slate-400">Universal trading psychology principles from experts</p>
+                                    <p className="text-slate-500 text-sm mt-1">(Separate from our personal conversations)</p>
+                                </div>
+                                
+                                {EXTERNAL_WISDOM.map((talk) => (
+                                    <div key={talk.id} className="card p-5 hover:border-blue-500/30 transition-all border-blue-500/10">
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex items-center gap-4">
+                                                <span className="text-4xl">{talk.icon}</span>
+                                                <div>
+                                                    <h3 className="text-xl font-bold text-white">{talk.title}</h3>
+                                                    <p className="text-slate-400">{talk.subtitle}</p>
+                                                    <p className="text-slate-500 text-sm mt-1">⏱️ {talk.duration}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button 
+                                                    onClick={() => speakText(talk.content, talk.id)}
+                                                    disabled={!voicesLoaded || (isSpeaking && currentTalkId === talk.id)}
+                                                    className="btn-primary py-2 px-4 text-sm bg-gradient-to-r from-blue-600 to-indigo-600"
+                                                >
+                                                    {isSpeaking && currentTalkId === talk.id ? '🔊 Playing...' : '▶️ Play'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        
+                        {/* THREE PRINCIPLES */}
+                        {currentView === 'principles' && (
+                            <div className="max-w-4xl mx-auto space-y-6">
+                                <div className="text-center mb-6">
+                                    <h2 className="text-3xl font-bold text-white mb-2">⚡ The Four Principles</h2>
+                                    <p className="text-slate-400">Your Emotional GPS</p>
+                                </div>
+                                
+                                {Object.values(THREE_PRINCIPLES).map((principle, idx) => (
+                                    <div key={idx} className={`principle-card card p-6 bg-gradient-to-r ${principle.color} bg-opacity-20`}>
+                                        <div className="flex items-start gap-5">
+                                            <span className="text-5xl">{principle.icon}</span>
+                                            <div className="flex-1">
+                                                <h3 className="text-2xl font-bold text-white">{principle.name}</h3>
+                                                <p className="text-xl text-orange-300 mt-1">"{principle.tagline}"</p>
+                                                <p className="text-slate-300 mt-3">{principle.description}</p>
+                                                <div className="mt-4 flex gap-3">
+                                                    <button 
+                                                        onClick={() => speakText(principle.fullText, `principle-${idx}`)}
+                                                        disabled={!voicesLoaded}
+                                                        className="btn-primary py-2 px-4"
+                                                    >
+                                                        🎧 Listen to Full Explanation
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        
+                        {/* 6-LAYER FORTRESS */}
+                        {currentView === 'fortress' && (
+                            <div className="max-w-4xl mx-auto space-y-4">
+                                <div className="text-center mb-6">
+                                    <h2 className="text-3xl font-bold text-white mb-2">🏰 6-Layer Emotional Fortress</h2>
+                                    <p className="text-slate-400">Your complete protection system</p>
+                                </div>
+                                
+                                {EMOTIONAL_FORTRESS.map((layer) => (
+                                    <div key={layer.layer} className="card p-5 flex items-center gap-5">
+                                        <div className={`w-14 h-14 ${layer.color} rounded-xl flex items-center justify-center text-2xl`}>
+                                            {layer.icon}
+                                        </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-orange-400 font-bold">Layer {layer.layer}</span>
+                                                <h3 className="text-xl font-bold text-white">{layer.name}</h3>
+                                            </div>
+                                            <p className="text-slate-400 text-sm">{layer.subtitle}</p>
+                                            <p className="text-slate-300 mt-1">{layer.description}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        
+                        {/* 8 ADVANTAGES */}
+                        {currentView === 'advantages' && (
+                            <div className="max-w-4xl mx-auto">
+                                <div className="text-center mb-6">
+                                    <h2 className="text-3xl font-bold text-white mb-2">💪 Your 8 Unfair Advantages</h2>
+                                    <p className="text-slate-400">Why the odds are in your favor</p>
+                                </div>
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                    {EIGHT_ADVANTAGES.map((adv) => (
+                                        <div key={adv.number} className="card p-5">
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <span className="text-3xl">{adv.icon}</span>
+                                                <span className="text-orange-400 font-bold">#{adv.number}</span>
+                                            </div>
+                                            <h3 className="text-lg font-bold text-white">{adv.title}</h3>
+                                            <p className="text-slate-400 text-sm mt-1">{adv.description}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* BREATHING */}
+                        {currentView === 'breathing' && (
+                            <div className="max-w-2xl mx-auto space-y-6">
+                                <div className="text-center mb-6">
+                                    <h2 className="text-3xl font-bold text-white mb-2">🫁 Breathing Exercises</h2>
+                                    <p className="text-slate-400">Calm your nervous system before and during trading</p>
+                                </div>
+                                
+                                {breathingActive && (
+                                    <div className="card p-8 text-center">
+                                        <div className={`w-40 h-40 mx-auto rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center breath-circle ${
+                                            breathPhase === 'BREATHE IN' ? 'breath-expand' : 
+                                            breathPhase === 'BREATHE OUT' ? 'breath-contract' : ''
+                                        }`}>
+                                            <div className="text-white text-center">
+                                                <p className="text-2xl font-bold">{breathPhase}</p>
+                                                <p className="text-4xl font-bold mt-2">{breathTimer}</p>
+                                            </div>
+                                        </div>
+                                        <button onClick={stopBreathing} className="btn-secondary mt-6 py-2 px-6">
+                                            ⏹️ Stop Exercise
+                                        </button>
+                                    </div>
+                                )}
+                                
+                                {!breathingActive && (
+                                    <div className="space-y-4">
+                                        {BREATHING_EXERCISES.map((ex, idx) => (
+                                            <div key={idx} className="card p-5 hover:border-blue-500/30 transition-all">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-4">
+                                                        <span className="text-4xl">{ex.icon}</span>
+                                                        <div>
+                                                            <h3 className="text-xl font-bold text-white">{ex.name}</h3>
+                                                            <p className="text-slate-400">{ex.subtitle}</p>
+                                                            <p className="text-slate-500 text-sm mt-1">{ex.description}</p>
+                                                        </div>
+                                                    </div>
+                                                    <button 
+                                                        onClick={() => startBreathing(ex)}
+                                                        className="btn-primary py-2 px-4"
+                                                    >
+                                                        ▶️ Start
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        
+                        {/* QUOTES */}
+                        {currentView === 'quotes' && (
+                            <div className="max-w-3xl mx-auto space-y-8">
+                                <div className="text-center mb-6">
+                                    <h2 className="text-3xl font-bold text-white mb-2">💬 Wisdom Quotes</h2>
+                                    <p className="text-slate-400">Guidance when you need it</p>
+                                </div>
+                                
+                                <div>
+                                    <h3 className="text-xl font-bold text-orange-400 mb-4">🎯 From Our Conversations</h3>
+                                    <div className="space-y-3">
+                                        {WISDOM_QUOTES.claude.map((q, idx) => (
+                                            <div key={idx} className="card p-4 border-orange-500/20">
+                                                <p className="text-white italic">"{q.text}"</p>
+                                                <p className="text-orange-400 text-sm mt-2">— {q.author}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h3 className="text-xl font-bold text-blue-400 mb-4">📚 From Trading Legends</h3>
+                                    <div className="space-y-3">
+                                        {WISDOM_QUOTES.external.map((q, idx) => (
+                                            <div key={idx} className="card p-4 border-blue-500/20">
+                                                <p className="text-white italic">"{q.text}"</p>
+                                                <p className="text-blue-400 text-sm mt-2">— {q.author}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* SAVED TALKS */}
+                        {currentView === 'saved' && (
+                            <div className="max-w-3xl mx-auto space-y-6">
+                                <div className="text-center mb-6">
+                                    <h2 className="text-3xl font-bold text-white mb-2">⭐ Saved Talks</h2>
+                                    <p className="text-slate-400">Your favorite mentor talks</p>
+                                </div>
+                                
+                                {savedTalks.length === 0 ? (
+                                    <div className="card p-8 text-center">
+                                        <span className="text-5xl">⭐</span>
+                                        <p className="text-slate-400 mt-4">No saved talks yet.</p>
+                                        <p className="text-slate-500 text-sm mt-1">Click the ⭐ button on any talk to save it here.</p>
+                                    </div>
+                                ) : (
+                                    savedTalks.map((talk, idx) => (
+                                        <div key={idx} className="card p-5 flex items-center justify-between">
+                                            <div className="flex items-center gap-4">
+                                                <span className="text-3xl">{talk.icon}</span>
+                                                <div>
+                                                    <h3 className="text-lg font-bold text-white">{talk.title}</h3>
+                                                    <p className="text-slate-500 text-sm">Saved {new Date(talk.savedAt).toLocaleDateString()}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button 
+                                                    onClick={() => speakText(talk.content, talk.id)}
+                                                    disabled={!voicesLoaded}
+                                                    className="btn-primary py-2 px-4 text-sm"
+                                                >
+                                                    ▶️ Play
+                                                </button>
+                                                <button 
+                                                    onClick={() => removeSavedTalk(idx)}
+                                                    className="btn-secondary py-2 px-3 text-sm"
+                                                >
+                                                    🗑️
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
+                        
+                        {/* VOICE SETTINGS - ENHANCED */}
+                        {currentView === 'settings' && (
+                            <div className="max-w-2xl mx-auto space-y-6">
+                                <div className="text-center mb-6">
+                                    <h2 className="text-3xl font-bold text-white mb-2">⚙️ Settings</h2>
+                                    <p className="text-slate-400">Customize your Trading Mentor experience</p>
+                                </div>
+                                
+                                {/* Voice Selection */}
+                                <div className="card p-6">
+                                    <h3 className="text-lg font-bold text-white mb-4">🎙️ Voice Selection</h3>
+                                    
+                                    {/* Filter Toggle */}
+                                    <div className="flex items-center justify-between mb-4 p-3 bg-slate-700/30 rounded-lg">
+                                        <span className="text-slate-300">Show only female voices</span>
+                                        <button 
+                                            onClick={() => {
+                                                const newVal = !showOnlyFemale;
+                                                setShowOnlyFemale(newVal);
+                                                localStorage.setItem('arnieShowOnlyFemale', newVal.toString());
+                                            }}
+                                            className={`w-14 h-8 rounded-full transition-all ${showOnlyFemale ? 'bg-pink-500' : 'bg-slate-600'}`}
+                                        >
+                                            <div className={`w-6 h-6 bg-white rounded-full transition-transform ${showOnlyFemale ? 'translate-x-7' : 'translate-x-1'}`}></div>
+                                        </button>
+                                    </div>
+                                    
+                                    {!voicesLoaded ? (
+                                        <p className="text-yellow-400">Loading voices...</p>
+                                    ) : (
+                                        <div className="space-y-2 max-h-64 overflow-y-auto">
+                                            {availableVoices
+                                                .filter(voice => !showOnlyFemale || getVoiceGender(voice.name) === 'female')
+                                                .map((voice, idx) => {
+                                                    const actualIdx = availableVoices.indexOf(voice);
+                                                    const gender = getVoiceGender(voice.name);
+                                                    return (
+                                                        <button
+                                                            key={actualIdx}
+                                                            onClick={() => {
+                                                                setSelectedVoiceIndex(actualIdx);
+                                                                localStorage.setItem('arnieSelectedVoice', actualIdx.toString());
+                                                            }}
+                                                            className={`w-full text-left p-3 rounded-lg transition-all flex items-center justify-between ${
+                                                                selectedVoiceIndex === actualIdx 
+                                                                    ? 'bg-orange-600/30 border border-orange-500' 
+                                                                    : 'bg-slate-700/30 hover:bg-slate-700/50 border border-transparent'
+                                                            }`}
+                                                        >
+                                                            <div className="flex items-center gap-3">
+                                                                <span className="text-xl">
+                                                                    {gender === 'female' ? '👩' : gender === 'male' ? '👨' : '🎤'}
+                                                                </span>
+                                                                <span className="text-white">{voice.name}</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                {gender !== 'unknown' && (
+                                                                    <span className={`voice-badge ${gender === 'female' ? 'voice-female' : 'voice-male'}`}>
+                                                                        {gender}
+                                                                    </span>
+                                                                )}
+                                                                {selectedVoiceIndex === actualIdx && <span className="text-orange-400">✓</span>}
+                                                            </div>
+                                                        </button>
+                                                    );
+                                                })}
+                                        </div>
+                                    )}
+                                    <p className="text-slate-500 text-sm mt-3">
+                                        {availableVoices.filter(v => getVoiceGender(v.name) === 'female').length} female voices available
+                                    </p>
+                                </div>
+                                
+                                {/* Speech Controls */}
+                                <div className="card p-6">
+                                    <h3 className="text-lg font-bold text-white mb-4">🔊 Speech Controls</h3>
+                                    
+                                    <div className="space-y-5">
+                                        <div>
+                                            <div className="flex justify-between mb-2">
+                                                <label className="text-slate-300">Speech Rate</label>
+                                                <span className="text-orange-400 font-bold">{speechRate.toFixed(2)}x</span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-slate-500 text-sm">Slow</span>
+                                                <input 
+                                                    type="range" 
+                                                    min="0.6" 
+                                                    max="1.4" 
+                                                    step="0.05" 
+                                                    value={speechRate}
+                                                    onChange={(e) => {
+                                                        const val = parseFloat(e.target.value);
+                                                        setSpeechRate(val);
+                                                        localStorage.setItem('arnieSpeechRate', val.toString());
+                                                    }} 
+                                                    className="flex-1 accent-orange-500" 
+                                                />
+                                                <span className="text-slate-500 text-sm">Fast</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <div className="flex justify-between mb-2">
+                                                <label className="text-slate-300">Voice Pitch</label>
+                                                <span className="text-orange-400 font-bold">{speechPitch.toFixed(2)}</span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-slate-500 text-sm">Low</span>
+                                                <input 
+                                                    type="range" 
+                                                    min="0.8" 
+                                                    max="1.2" 
+                                                    step="0.05" 
+                                                    value={speechPitch}
+                                                    onChange={(e) => {
+                                                        const val = parseFloat(e.target.value);
+                                                        setSpeechPitch(val);
+                                                        localStorage.setItem('arnieSpeechPitch', val.toString());
+                                                    }} 
+                                                    className="flex-1 accent-orange-500" 
+                                                />
+                                                <span className="text-slate-500 text-sm">High</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Test Voice */}
+                                <div className="card p-6">
+                                    <h3 className="text-lg font-bold text-white mb-4">🧪 Test Voice</h3>
+                                    <div className="flex flex-wrap gap-3">
+                                        <button 
+                                            onClick={() => speakText("Testing voice settings. You know what to do. You know how to do it. The system trades, not your emotions.")}
+                                            disabled={!voicesLoaded}
+                                            className="btn-primary py-3 px-6"
+                                        >
+                                            🔊 Test Selected Voice
+                                        </button>
+                                        <button 
+                                            onClick={() => speakText("The Four Principles: Thunderstorm, Casino, Ambien, and Calm State. Your emotional GPS for trading success.")}
+                                            disabled={!voicesLoaded}
+                                            className="btn-secondary py-3 px-6"
+                                        >
+                                            🧭 Test Four Principles
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                {/* Save as Default */}
+                                <div className="card p-6">
+                                    <h3 className="text-lg font-bold text-white mb-4">💾 Save as Default</h3>
+                                    <p className="text-slate-400 text-sm mb-4">Save your current voice settings so they load automatically next time.</p>
+                                    <button 
+                                        onClick={() => {
+                                            localStorage.setItem('arnieDefaultVoice', selectedVoiceIndex.toString());
+                                            localStorage.setItem('arnieDefaultRate', speechRate.toString());
+                                            localStorage.setItem('arnieDefaultPitch', speechPitch.toString());
+                                            localStorage.setItem('arnieShowOnlyFemale', showOnlyFemale.toString());
+                                            setSettingsSaved(true);
+                                            showToast('✓ Settings saved as default!');
+                                            setTimeout(() => setSettingsSaved(false), 3000);
+                                        }}
+                                        className={`py-3 px-8 rounded-xl font-semibold transition-all ${
+                                            settingsSaved 
+                                                ? 'bg-green-500 text-white' 
+                                                : 'bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white'
+                                        }`}
+                                    >
+                                        {settingsSaved ? '✓ Saved!' : '💾 Save Current Settings as Default'}
+                                    </button>
+                                </div>
+                                
+                                {/* Data Management */}
+                                <div className="card p-6">
+                                    <h3 className="text-lg font-bold text-white mb-4">💾 Data Management</h3>
+                                    
+                                    <div className="space-y-4">
+                                        <div className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg">
+                                            <div>
+                                                <p className="text-white">Listening Streak</p>
+                                                <p className="text-slate-500 text-sm">Current: {mentorStreak} days</p>
+                                            </div>
+                                            <button 
+                                                onClick={() => {
+                                                    if (confirm('Reset your listening streak to 0?')) {
+                                                        setMentorStreak(0);
+                                                        localStorage.setItem('arnieMentorStreak', '0');
+                                                        localStorage.removeItem('arnieMentorLastListen');
+                                                        showToast('Streak reset');
+                                                    }
+                                                }}
+                                                className="btn-secondary py-2 px-4 text-sm"
+                                            >
+                                                Reset Streak
+                                            </button>
+                                        </div>
+                                        
+                                        <div className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg">
+                                            <div>
+                                                <p className="text-white">Saved Talks</p>
+                                                <p className="text-slate-500 text-sm">{savedTalks.length} saved</p>
+                                            </div>
+                                            <button 
+                                                onClick={() => {
+                                                    if (savedTalks.length > 0 && confirm('Clear all saved talks?')) {
+                                                        setSavedTalks([]);
+                                                        localStorage.setItem('arnieSavedTalks', '[]');
+                                                        showToast('Saved talks cleared');
+                                                    }
+                                                }}
+                                                className="btn-secondary py-2 px-4 text-sm"
+                                                disabled={savedTalks.length === 0}
+                                            >
+                                                Clear Saved
+                                            </button>
+                                        </div>
+                                        
+                                        <div className="flex items-center justify-between p-3 bg-red-900/20 rounded-lg border border-red-500/30">
+                                            <div>
+                                                <p className="text-white">Reset All Settings</p>
+                                                <p className="text-slate-500 text-sm">Restore defaults</p>
+                                            </div>
+                                            <button 
+                                                onClick={() => {
+                                                    if (confirm('Reset ALL settings to defaults? This cannot be undone.')) {
+                                                        localStorage.clear();
+                                                        window.location.reload();
+                                                    }
+                                                }}
+                                                className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-sm transition-colors"
+                                            >
+                                                Reset All
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* About */}
+                                <div className="card p-6">
+                                    <h3 className="text-lg font-bold text-white mb-4">ℹ️ About</h3>
+                                    <div className="text-slate-400 space-y-2">
+                                        <p><strong className="text-white">Trading Mentor Pro</strong></p>
+                                        <p>Your personal emotional fortress and pre-session preparation system.</p>
+                                        <p className="text-sm">Built with ❤️ for Dr. Arnie's trading journey.</p>
+                                        <p className="text-sm mt-3">Four Principles: ⛈️ Thunderstorm • 🎰 Casino • 💊 Ambien • 🧘 Calm State</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        
+                    </main>
+                </div>
+                
+                {/* Toast Notification */}
+                {toast && (
+                    <div className="toast">
+                        <span className="text-white">{toast}</span>
+                    </div>
+                )}
+            </div>
+        );
+    }
+    
+    ReactDOM.render(<TradingMentorApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
